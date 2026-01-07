@@ -1,0 +1,24 @@
+{
+  "buffer": {
+    "bytesRead": 60000000,
+    "executionTimeMs": 40,
+    "memoryUsageMB": {
+      "rss": 137461760,
+      "heapTotal": 7401472,
+      "heapUsed": 4894368,
+      "external": 83044505,
+      "arrayBuffers": 81375211
+    }
+  },
+  "stream": {
+    "bytesRead": 60000000,
+    "executionTime": 45,
+    "memoryUsageMB": {
+      "rss": 140607488,
+      "heapTotal": 7401472,
+      "heapUsed": 5108592,
+      "external": 90091457,
+      "arrayBuffers": 88422123
+    }
+  }
+}
