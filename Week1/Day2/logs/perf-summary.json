@@ -1,0 +1,14 @@
+[
+  {
+    "concurrency": 1,
+    "executionTime": 68
+  },
+  {
+    "concurrency": 4,
+    "executionTime": 36
+  },
+  {
+    "concurrency": 8,
+    "executionTime": 60
+  }
+]

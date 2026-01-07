@@ -1,0 +1,48 @@
+{
+  "totalWords": 164990,
+  "uniqueWords": 11,
+  "longestWord": "development",
+  "shortestWord": "ipsum",
+  "topWords": [
+    [
+      "lorem",
+      15184
+    ],
+    [
+      "dictionary",
+      15180
+    ],
+    [
+      "launchpad",
+      15051
+    ],
+    [
+      "implement",
+      15043
+    ],
+    [
+      "concurrency",
+      15009
+    ],
+    [
+      "javascript",
+      15002
+    ],
+    [
+      "ipsum",
+      14976
+    ],
+    [
+      "python",
+      14959
+    ],
+    [
+      "chunks",
+      14908
+    ],
+    [
+      "async",
+      14878
+    ]
+  ]
+}
