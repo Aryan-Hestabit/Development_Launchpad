@@ -15,9 +15,9 @@
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/v0.40.3/install.sh | bash
 ```
-![OS info](images/OSinfo.png)
+![nvmInstall](images/nvmInstall.png)
 
-**Description:** Downloads the official NVM installation script from the NVM GitHub repository and executes it to install Node Version Manager on the system.
+**Description:** Downloads the official nvm installation script from the nvm GitHub repository and executes it to install Node Version Manager on the system.
 
 ---
 
@@ -27,9 +27,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/v0.40.3/install.sh | bash
 ```bash
 nvm -v
 ```
-![OS info](images/OSinfo.png)
+![nvmVersion](images/nvmVersion.png)
 
-**Description:** Checks whether NVM has been installed successfully by displaying the currently installed NVM version.
+**Description:** Verifies the installation of nvm in the kernel by displaying it's version.
 
 ---
 
@@ -41,9 +41,9 @@ nvm -v
 ```bash
 nvm install --lts
 ```
-![OS info](images/OSinfo.png)
+![ltsInstall](images/ltsInstall.png)
 
-**Description:** Downloads and installs the latest Long Term Support (LTS) version of Node.js using NVM.
+**Description:** Downloads and installs the latest Long Term Support (LTS) version of Node.js using nvm.
 
 ---
 
@@ -53,7 +53,7 @@ nvm install --lts
 ```bash
 nvm use --lts
 ```
-![OS info](images/OSinfo.png)
+![uselts](images/uselts.png)
 
 **Description:** Switches the active Node.js version to the installed LTS version for the current shell session.
 
