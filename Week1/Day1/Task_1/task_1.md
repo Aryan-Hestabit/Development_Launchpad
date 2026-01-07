@@ -2,7 +2,8 @@
 ## Development Launchpad  
 ### Task 1  
 
-**Submitted By:** Aryan  
+**Submitted By:** Aryan
+
 **Email:** aryan@hestabit.in  
 
 ---
@@ -15,6 +16,7 @@
 lsb_release -a
 ```
 ![OS info](images/OSinfo.png)
+
 **Description:** Displays detailed information about the Linux distribution currently installed on the system, including distributor ID, description, release number, and codename.
 
 ---
@@ -25,6 +27,7 @@ lsb_release -a
 echo $SHELL
 ```
 ![Shell](images/Shell.png)
+
 **Description:** Prints the path of the default shell that is currently being used by the user (for example, bash or zsh).
 
 ---
@@ -34,7 +37,8 @@ echo $SHELL
 ```bash
 which node
 ```
-![NodePath](images/NodePath.png)
+![nodePath](images/NodePath.png)
+
 **Description:** Shows the exact file system location of the Node.js executable that is being used when the `node` command is run.
 
 ---
@@ -45,6 +49,7 @@ which node
 npm config get prefix
 ```
 ![npmPath](images/npmPath.png)
+
 **Description:** Displays the directory where npm installs global packages and binaries by default.
 
 ---
@@ -55,5 +60,6 @@ npm config get prefix
 echo $PATH | grep -i 'node\|npm'
 ```
 ![PathEntries](images/PathEntries.png)
+
 **Description:** Filters and displays only those entries from the system PATH environment variable that contain the words "node" or "npm", helping identify relevant executable paths.
 
