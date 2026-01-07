@@ -37,7 +37,7 @@ echo $SHELL
 ```bash
 which node
 ```
-![nodePath](images/NodePath.png)
+![nodePath](images/nodePath.png)
 
 **Description:** Shows the exact file system location of the Node.js executable that is being used when the `node` command is run.
 
