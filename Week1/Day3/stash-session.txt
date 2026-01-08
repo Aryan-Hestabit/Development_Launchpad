@@ -1,15 +1,16 @@
-Development Launchpad Day 3
-Task 4
+## Development Launchpad Day 3
+## Task 4
 
 This session demonstrates the the workflow of stash command of Git
 
 ---
 
-Step 1: Made Temporary changes in the commits.txt
+## Step 1: Made Temporary changes in the commits.txt
 ---
 
 Step 2: Stash local changes
 Command:
+
 ```bash
 git stash
 ```
