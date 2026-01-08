@@ -1,0 +1,51 @@
+Development Launchpad Day 3
+Task 4
+
+This session demonstrates the the workflow of stash command of Git
+
+---
+
+Step 1: Made Temporary changes in the commits.txt
+---
+
+Step 2: Stash local changes
+Command:
+```bash
+git stash
+```
+
+Result:
+All uncommitted changes were saved to the stash and the working directory became clean.
+
+---
+
+Step 3: Pull latest changes from remote
+Command:
+```bash
+git pull origin main
+```
+
+Issue Encountered:
+The pull initially failed due to an upstream branch mismatch. The correct remote branch was identified using:
+git branch -r
+
+After correcting the branch reference, the pull completed successfully.
+
+---
+
+Step 4: Reapply stashed changes
+Command:
+```bash
+git stash apply
+```
+
+Result:
+The previously stashed changes were restored on top of the updated codebase without any conflicts.
+
+![stash](images/stash-session.png)
+
+---
+
+Final Outcome:
+The stash workflow allowed local uncommitted work to be temporarily saved, remote changes to be pulled safely, and the local work to be restored without data loss or conflicts.
+
