@@ -49,10 +49,11 @@ Completing the Merge
 
 After resolving the conflict, the merge was completed using:
 
-git add app.js
+```bash
+git add commit.txt
 git commit -m "Merge conflict resolved: kept both changes"
+```
 
-Screenshot
 
 Resolved file staged and committed:
 
@@ -67,10 +68,6 @@ Error message:
 
 ! [rejected] main -> main (non-fast-forward)
 
-Screenshot
-
-Push rejected due to non-fast-forward:
-
 
 Final Resolution
 
@@ -78,30 +75,26 @@ The issue was resolved by pulling the remote changes again using a merge
 strategy and then pushing the updated history.
 
 Commands used:
-
+```bash
 git pull --no-rebase origin main
 git push origin main
-
-Screenshot
-
-Successful push after resolving divergence:
-
-
-Commit Graph Verification
+```
 
 The final commit graph confirms:
 
-Parallel commits from two clones
+1.Parallel commits from two clones
 
-A merge commit combining both histories
+2.A merge commit combining both histories
 
-Conflict resolution preserved in history
+3.Conflict resolution preserved in history
 
 Command used:
-
+```bash
 git log --oneline --graph --all
+```
 
-Screenshot
+## Screenshot
+![graph](images/Graph.png)
 
 Final commit graph with merge history:
 
