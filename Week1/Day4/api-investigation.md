@@ -1,7 +1,8 @@
-##Postman API investigation 
+## Postman API investigation 
 This documentation covers the API investigation on a server made on localhost 3000.
 
 Server creation:
+
 ![creation](images/server.png)
 
 ## /echo
