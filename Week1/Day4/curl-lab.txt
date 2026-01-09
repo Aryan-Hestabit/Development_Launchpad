@@ -72,7 +72,9 @@ ETag:
 Terminal Command: curl -I https://dummyjson.com/products?limit=5
 etag: W/"1cf6-vKLgOnINYP3dn8/IH5KH5MkT1tI"
 
+=======================================
 after running this terminal command:
+=======================================
 curl -v -H 'If-None-Match: W/"1cf6-vKLgOnINYP3dn8/IH5KH5MkT1tI"' https://dummyjson.com/products?limit=5
 
 Response:
@@ -94,3 +96,5 @@ cf-cache-status: DYNAMIC
 report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=3AsB44Du3UCcyscH9r63KoI%2BLNiNLAN4QDt%2BDNETy1Ln3GDuT1GY58LGWZ6sOpTvzyXDuOgdh05fkfXbWdQVqDJidzIKVr7%2BE11y"}]}
 nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
 cf-ray: 9bac4165af2a1852-MRS
+
+
