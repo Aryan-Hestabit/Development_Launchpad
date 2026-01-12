@@ -52,8 +52,8 @@ Includes:
 
 ## Media Usage
 
-Images stored in a dedicated images/ folder
-Uniform sizing using width and height attributes
+Images stored in a dedicated images/ folder <br>
+Uniform sizing using width and height attributes <br>
 Video embedded using the ```<video>``` element with controls enabled
 
 ## Sidebar Functionality
