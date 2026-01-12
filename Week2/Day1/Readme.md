@@ -32,14 +32,14 @@ Improves usability and accessibility with aria-label
 
 2. Main Content
 
-The <main> section is divided into two primary sections:
+The ```<main>``` section is divided into two primary sections:
 
 <b>Featured Posts </b>
 
-Implemented using <section> and <article>
+Implemented using ```<section>``` and ```<article>```
 Each post contains:
-   <figure> and <img>
-   <header> with title and publication date
+   ```<figure>``` and ```<img>```
+   ```<header>``` with title and publication date
 Images are uniformly sized using HTML attributes
 
 <b>Blog Posts </b>
