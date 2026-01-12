@@ -36,15 +36,15 @@ The ```<main>``` section is divided into two primary sections:
 
 <b>Featured Posts </b>
 
-Implemented using ```<section>``` and ```<article>```
+Implemented using ```<section>``` and ```<article>``` <br>
 Each post contains:
    ```<figure>``` and ```<img>```
-   ```<header>``` with title and publication date
+   ```<header>``` with title and publication date <br>
 Images are uniformly sized using HTML attributes
 
 <b>Blog Posts </b>
 
-Individual blog articles created using ```<article>```
+Individual blog articles created using ```<article>``` <br>
 Includes:
   Text-based blogs
   A blog post with embedded ```<video>```
@@ -58,30 +58,30 @@ Video embedded using the ```<video>``` element with controls enabled
 
 ## Sidebar Functionality
 
-The ```<aside>``` section contains:
-   Search form with label and validation
-   Recent posts list
-   Categories list
-   Newsletter subscription form with email validation
+The ```<aside>``` section contains:<br>
+   Search form with label and validation <br>
+   Recent posts list <br>
+   Categories list <br>
+   Newsletter subscription form with email validation <br>
 
 ## Forms & Validation
 
-Forms use semantic ```<form>```, ```<label>```, and ```<input>``` elements
-HTML5 validation via required and type="email"
-No JavaScript used
+Forms use semantic ```<form>```, ```<label>```, and ```<input>``` elements <br>
+HTML5 validation via required and type="email" <br>
+No JavaScript used <br>
 
 ## Accessibility Features
 
-Semantic landmarks (header, main, section, article, aside, footer)
-aria-label for navigation and sidebar
-Proper alt attributes for images
-Labels associated with form inputs
-Logical heading hierarchy
-Constraints Followed
+Semantic landmarks (header, main, section, article, aside, footer) <br>
+aria-label for navigation and sidebar <br>
+Proper alt attributes for images <br>
+Labels associated with form inputs <br>
+Logical heading hierarchy <br>
+Constraints Followed <br>
 
 ## Learning Outcomes
 
-Improved understanding of semantic HTML layout
-Practical application of accessibility best practices
-Experience building structured content without styling
-Better comprehension of content hierarchy and navigation
+Improved understanding of semantic HTML layout <br>
+Practical application of accessibility best practices <br>
+Experience building structured content without styling <br>
+Better comprehension of content hierarchy and navigation 
