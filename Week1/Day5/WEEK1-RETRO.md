@@ -1,4 +1,4 @@
-### Day 1 — File Handling & Performance
+# Day 1 — File Handling & Performance
 
 ## Lessons Learned
 1. Learned the difference between buffer-based file reading and stream-based file reading.
