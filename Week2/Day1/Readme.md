@@ -44,21 +44,21 @@ Images are uniformly sized using HTML attributes
 
 <b>Blog Posts </b>
 
-Individual blog articles created using <article>
+Individual blog articles created using ```<article>```
 Includes:
   Text-based blogs
-  A blog post with embedded <video>
-  Proper metadata using <time>
+  A blog post with embedded ```<video>```
+  Proper metadata using ```<time>```
 
 ## Media Usage
 
 Images stored in a dedicated images/ folder
 Uniform sizing using width and height attributes
-Video embedded using the <video> element with controls enabled
+Video embedded using the ```<video>``` element with controls enabled
 
 ## Sidebar Functionality
 
-The <aside> section contains:
+The ```<aside>``` section contains:
    Search form with label and validation
    Recent posts list
    Categories list
@@ -66,7 +66,7 @@ The <aside> section contains:
 
 ## Forms & Validation
 
-Forms use semantic <form>, <label>, and <input> elements
+Forms use semantic ```<form>```, ```<label>```, and ```<input>``` elements
 HTML5 validation via required and type="email"
 No JavaScript used
 
