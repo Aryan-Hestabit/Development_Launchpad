@@ -10,7 +10,7 @@
 1. Initial confusion about memory usage metrics.
 2. Output timing was misleading when async code was not handled properly.
 
-### Day 2 — CLI Tools, Large Data & Concurrency
+# Day 2 — CLI Tools, Large Data & Concurrency
 
 ## Lessons Learned
 1. Learned how to build executable CLI tools using Node.js.
@@ -23,7 +23,7 @@
 1. Incorrect chunk division caused incomplete file processing initially.
 2. Worker thread communication bugs resulted in missing statistics (Used Promise all Function for that).
 
-### Day 3 — Git Recovery & Discipline
+# Day 3 — Git Recovery & Discipline
 
 ## Lessons Learned
 1. Learned how to recover from mistakes without rewriting Git history using.
@@ -44,7 +44,7 @@ git bisect
 2. Main branch was ahead of the repo branch , therefore had to use git pull to copy the content from main branch and then resolve conflict.
 3. Merge conflicts were confusing until conflict markers were clearly understood.
 
-### Day 4 — HTTP & API Forensics
+# Day 4 — HTTP & API Forensics
 
 ## Lessons Learned
 1. Learned the fundamentals of the HTTP request–response cycle.
@@ -58,7 +58,7 @@ git bisect
 1. Header modifications initially appeared ineffective, causing confusion.
 3. Needed careful inspection to avoid assuming differences where none existed.
 
-### Day 5 — Automation & Safeguards
+# Day 5 — Automation & Safeguards
 
 ## Lessons Learned
 1. Learned how automation prevents bad commits early in the workflow.
