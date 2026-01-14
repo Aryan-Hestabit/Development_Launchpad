@@ -1,5 +1,5 @@
 # Original Layout:
-![original](comparision/OriginalDesign.png)
+![original](comparison/OriginalDesign.png)
 
 # Final Layout:
-![Final](comparision/Design1.png)
+![Final](comparison/Design1.png)
