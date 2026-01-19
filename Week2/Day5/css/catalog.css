@@ -1,0 +1,109 @@
+.catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+  padding: 40px;
+}
+
+/* CARD */
+.product-card {
+  background: rgb(0, 0, 0);
+  border-radius: 14px;
+  color:aliceblue ;
+  padding: 18px;
+  text-align: left;
+  box-shadow: 0 0 10px 4px rgba(245, 135, 221, 0.712);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 2px 2px rgba(245, 135, 221, 0.712);
+}
+
+/* IMAGE */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+/* TITLE */
+.product-card h3 {
+  color: rgb(102, 1, 80);
+  margin-bottom: 10px;
+}
+.product-card h4{
+  color:rgba(245, 135, 221, 0.712);
+}
+
+/* PRICE */
+.product-card .price {
+  font-size: 16px;
+  font-weight: bolder; 
+}
+
+/* BADGES */
+.badge {
+  top: 12px;
+  position: absolute;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 20px;
+  color: rgb(255, 255, 255);
+}
+
+/* SALE */
+.badge.sale {
+  left: 12px;
+  background: #e63946;
+}
+
+/* RATING */
+.badge.rating {
+  right: 12px;
+  background: #2a9d8f;
+}
+
+.badge.rating.low {
+  background: #f4a261;
+}
+
+/* OUT OF STOCK */
+.badge.out {
+  right: 35%;
+  align-self: center;
+  background: #55555562;
+}
+
+.old{
+  text-decoration: line-through;
+}
+
+.discount{
+  border-radius: 10px;
+  background-color: #e63946;
+  margin-right: 55%;
+  margin-bottom: 2px;
+  padding:5px;
+}
+
+.sort{
+  position: fixed;
+  right: 0;
+  top: 70px;
+  z-index:1000;
+  background-color: #1b1b1b;
+  box-shadow: 0 0 2px 2px rgba(245, 135, 221, 0.712);
+  color:rgba(245, 135, 221, 0.712);
+  border-radius: 5px;
+}
+
+body{
+ background-color:#1b1b1b;
+}
+

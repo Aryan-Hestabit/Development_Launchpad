@@ -1,0 +1,36 @@
+h1{
+    color: rgb(0, 0, 0);
+    font-size: 50px;
+    font-weight: bolder;
+    text-align:center;
+    margin-top:30px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 40px;
+}
+
+.category-card {
+    background: rgb(0, 0, 0);
+    color: rgba(245, 135, 221, 0.712);
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 0 10px 4px rgba(245, 135, 221, 0.712);
+    cursor: pointer;
+    font-weight: bolder;
+    transition: transform .2s;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+}
+
+body{
+    background-image: url("../Images/6.jpg");
+    background-size: cover;
+    background-position: center;
+}

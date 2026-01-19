@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+
+<div id="header"></div>
+<main class="main-content">
+
+<section class="hero">
+  <h1>Discover Amazing Products</h1>
+  <button onclick="goToCatalog()">Discover</button>
+</section>
+
+<section class="features">
+  <article class="card Sale" onclick="goToSale()">Sale</article>
+  <article class="card Toprated" onclick="goToToprated()">Top Rated</article>
+  <article class="card New" onclick="goToCatalog()">New Arrivals</article>
+</section>
+
+<section class="contact">
+  <h2>Contact Us</h2>
+  <input placeholder="Name" class="contactinput">
+  <input placeholder="Email" class="contactinput" type = "email">
+  <textarea placeholder="Message" class="contactinput"></textarea>
+</section>
+</main>
+<div id="footer"></div>
+
+<script src="js/headerFooter.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

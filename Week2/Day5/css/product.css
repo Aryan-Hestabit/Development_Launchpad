@@ -1,0 +1,96 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+#product {
+  padding: 30px;
+}
+
+#product img {
+  min-width: none;
+  width: 400px;
+}
+
+#product h3{
+  color:rgba(245, 135, 221, 0.712);
+}
+
+#product h1{
+  color: rgb(102, 1, 80);
+}
+
+#product h2{
+  margin: 0;
+  color: rgba(245, 135, 221, 0.712);
+}
+
+#product #price{
+  font-size: 25px;
+  color:aliceblue;
+  margin-bottom: 10px;
+}
+
+
+#similar {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+.similarProduct{
+  box-shadow: 0 0 10px 4px rgba(245, 135, 221, 0.712);
+  color:aliceblue;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items:center;
+}
+
+body{
+ background-color:#1b1b1b;
+}
+
+h2{
+  margin-left: 30px;
+  color: rgb(102, 1, 80);
+  font-weight: bolder;
+}
+
+.Productinfo{
+  display:flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px 4px rgba(245, 135, 221, 0.712);
+}
+
+.InfoTitle{
+  box-shadow: 0 0 10px 4px rgba(245, 135, 221, 0.712);
+  padding: 20px;
+}
+
+.Description{
+  padding: 20px;
+  color:aliceblue;
+}
+
+.Rating{
+  padding: 20px;
+  color:aliceblue;
+}
+
+.Warranty{
+  padding: 20px;
+  color:aliceblue;
+}
+.Return{
+  padding: 20px;
+  color:aliceblue;
+}
+
+.Shipping{
+  padding: 20px;
+  color:aliceblue;
+}
