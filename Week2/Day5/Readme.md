@@ -15,7 +15,7 @@ https://dummyjson.com/products
 
 1. Checked API using DevTool "Network" Tab:
 
-![API Response]("Images/APIResponse.png")
+![API Response](Images/APIResponse.png)
 
 2. Found that the API has Total of 194 Products, but due to "limit = 30" , Response only shows 30 products
 
@@ -60,7 +60,7 @@ Each page shares a **common Header and Footer**, injected dynamically using Java
 - Fixed footer
 
 ### Screenshot
-![Home Page]("Images/Home.png")
+![Home Page](Images/Home.png)
 
 ---
 
@@ -72,7 +72,7 @@ Each page shares a **common Header and Footer**, injected dynamically using Java
 - Clicking a category redirects to the Catalog page filtered by that category
 
 ### Screenshot
-![Categories Page]("Images/Categories.png")
+![Categories Page](Images/Categories.png)
 
 ---
 
@@ -100,7 +100,7 @@ Each page shares a **common Header and Footer**, injected dynamically using Java
 - Clicking a product opens its detailed product page
 
 ### Screenshot
-![Catalog Page]("Images/Catalog.png")
+![Catalog Page](Images/Catalog.png)
 
 ---
 
@@ -119,8 +119,8 @@ Each page shares a **common Header and Footer**, injected dynamically using Java
 - Header and footer remain fixed while content scrolls
 
 ### Screenshot
-![Product Page]("Images/Product1.png")
-![Product Page]("Images/Product2.png")
+![Product Page](Images/Product1.png)
+![Product Page](Images/Product2.png)
 
 ---
 
