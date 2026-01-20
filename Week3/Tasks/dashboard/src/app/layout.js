@@ -22,14 +22,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-gray-100">
-        <div className="flex flex-col h-screen">
-          <Navbar />
-          <div className="flex flex-1">
-            <Sidebar />
-            <main className="flex-1">
-              {children}
-            </main>
-          </div>
+        <Navbar />
+        <div className="flex flex-1 h-screen">
+          <Sidebar />
+          <main className="flex-1 flex-col p-6">
+            {children}
+          </main>
         </div>
       </body>
     </html>
