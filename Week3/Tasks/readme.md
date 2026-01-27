@@ -160,3 +160,35 @@ All data is frontend-only and stored in:
 src/data/
 ```
 This allows easy replacement with real APIs in the future.
+
+### 🧠 Key Learnings (IMPORTANT)
+
+## Next.js App Router
+- How layout.js controls shared UI
+- Nested layouts for dashboard pages
+- How to exclude layouts for specific pages (e.g., login)
+
+## Tailwind CSS
+- Utility-first styling approach
+- Responsive design using breakpoints (sm, md, lg)
+- Handling background images properly with next/image
+- Avoiding common Tailwind setup errors
+
+## Component Architecture
+- Atomic design mindset
+- Building reusable, prop-based components
+- Avoiding duplicated UI logic
+- Separation of UI and data
+
+## Data Handling (Frontend Only)
+- Creating mock data folders
+- Mapping dynamic table columns
+- Reusing data across multiple components
+
+## Common Errors & Fixes
+❌ Can't resolve 'tailwindcss'
+- Learned importance of running Next.js from the correct folder
+- Understanding how Node module resolution works
+
+❌ Metadata errors with "use client"
+- Learned server vs client component boundaries
