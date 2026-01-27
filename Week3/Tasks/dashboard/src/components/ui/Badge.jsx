@@ -1,16 +1,17 @@
-export default function Badge({ label, color = "blue" }) {
-  const colors = {
-    blue: "bg-blue-100 text-blue-700",
-    green: "bg-green-100 text-green-700",
-    yellow: "bg-yellow-100 text-yellow-700",
-    red: "bg-red-100 text-red-700",
+export default function Badge({ children, type = "default", color }) {
+  const baseClasses = "items-center px-4 py-3 font-semibold rounded-full";
+
+  const statusStyles = {
+    critical: "bg-red-100 text-red-700",
+    success: "bg-green-100 text-green-700",
+    pending: "bg-yellow-100 text-yellow-700",
+    default: "bg-gray-100 text-gray-700",
   };
 
-  return (
-    <span
-      className={`text-s px-2 py-1 rounded ${colors[color]}`}
-    >
-      {label}
-    </span>
-  );
+  // If custom color is provided, it takes priority
+  const style = color
+    ? `bg-${color}-100 text-${color}-700`
+    : statusStyles[type] || statusStyles.default;
+
+  return <span className={`${baseClasses} ${style}`}>{children}</span>;
 }
