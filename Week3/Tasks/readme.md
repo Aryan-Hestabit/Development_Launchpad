@@ -23,6 +23,7 @@ This project is ideal for learning or demonstrating:
 ---
 
 ## 📂 Project Folder Structure
+```bash
 dashboard/
 ├── .next/ # Next.js build output
 ├── node_modules/ # Dependencies
@@ -81,7 +82,7 @@ dashboard/
 ├── eslint.config.mjs
 ├── jsconfig.json
 └── package.json
-
+```
 ---
 
 ## 📄 Pages Overview
