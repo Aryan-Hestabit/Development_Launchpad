@@ -60,6 +60,9 @@ The application starts in a well-defined sequence:
 - Server begins listening on the configured port
 This explicit bootstrapping avoids hidden dependencies and unpredictable behavior.
 
+![log](Screenshots/log.png)
+![startup](Screenshots/Startup.png)
+
 ## Health Check
 
 A basic health route is provided to verify server availability:
@@ -69,6 +72,7 @@ GET /health
 
 Response:
 OK
+![health check](Screenshots/Health.png)
 
 ## 📦 Deliverables
 
@@ -84,3 +88,89 @@ readme.md – Architectural overview and design rationale
 - Explicit startup order improves reliability and debuggability
 - Environment isolation is critical for secure deployments
 - Logging is a first-class concern in production applications
+
+
+# DAY 2 — Database Modeling, Indexing & Advanced CRUD 
+
+## 📌 Overview
+This day focuses on designing a robust and scalable data layer using MongoDB and Mongoose. The objective is to move beyond basic CRUD operations and implement real-world schema design, indexing strategies, and the repository pattern to support maintainable and performant backend systems.
+
+## 🧠 Concepts Covered 
+
+1. MongoDB & Mongoose
+- MongoDB as a document-oriented NoSQL database 
+- Use of Mongoose to enforce schemas, validation, and constraints 
+- Lazy creation of databases and collections upon first write 
+
+2. Schema Design Principles 
+- Field validation and normalization 
+- Use of timestamps for auditing 
+- Embedded vs referenced schema decisions 
+- Controlled data transformations 
+
+3. Hooks & Virtual Fields 
+- Pre-save hooks to preprocess data before persistence 
+- Secure password hashing using bcrypt 
+- Virtual fields for computed properties such as: 
+      - User full name 
+      - Product average rating 
+Virtual fields are computed at runtime and are not stored in the database. 
+
+4. Indexing Strategies
+- Use of compound indexes to optimize common query patterns 
+- Index definition: 
+```bash
+{ status: 1, createdAt: -1 }
+```
+- Understanding how indexes improve filtering and sorting performance 
+- Index verification using MongoDB Compass 
+
+5. Pagination Strategies 
+- Offset-based pagination using skip and limit 
+- Trade-offs between simplicity and performance 
+- Awareness of cursor-based pagination for large datasets 
+
+6. Repository Pattern 
+- Centralized database access layer 
+- Isolation of persistence logic from application logic 
+- Improved maintainability, testability, and scalability 
+Repositories expose clear methods for CRUD operations without leaking database implementation details. 
+
+## 🧩 Models Implemented 
+
+### User Model
+- Secure password storage with hashing 
+- Virtual fullName field 
+- Field-level validation and normalization 
+- Compound indexing for efficient queries 
+
+### Product Model
+- Pricing and rating-related fields 
+- Virtual rating field computed dynamically 
+- Status-based filtering support 
+- Compound indexing for paginated queries 
+
+### 📁 Key Files 
+```bash
+src/ 
+├── models/ 
+│ ├── User.js 
+│ └── Product.js 
+├── repositories/ 
+│ ├── user.repository.js 
+│ └── product.repository.js 
+```
+### 🧪 Verification & Analysis
+- Database connection verified via application logs
+User Database:
+![MongoDB User](Screenshots/User_database.png)
+Product Database:
+![MongoDB Product](Screenshots/User_database.png)
+- Documents inserted using application logic
+- Computed fields confirmed via Mongoose query results 
+
+## 🚀 Key Takeaways 
+- Proper schema design is critical for data integrity 
+- Indexing significantly impacts query performance 
+- Repository pattern enforces clean separation of concerns 
+- Mongoose provides powerful abstractions for real-world database modeling

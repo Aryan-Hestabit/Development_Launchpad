@@ -42,3 +42,7 @@
 [2026-01-28T14:23:13.407Z] INFO: Database connected
 [2026-01-28T14:23:13.408Z] INFO: Routes mounted: 1 endpoint
 [2026-01-28T14:23:13.412Z] INFO: Server started on port 3000
+[2026-01-29T08:04:48.870Z] INFO: Middlewares loaded
+[2026-01-29T08:04:48.919Z] INFO: Database connected
+[2026-01-29T08:04:48.920Z] INFO: Routes mounted: 1 endpoint
+[2026-01-29T08:04:48.926Z] INFO: Server started on port 3000
