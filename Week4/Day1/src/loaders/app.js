@@ -1,47 +1,30 @@
 const express = require("express");
-const logger = require("../utils/logger");
-const config = require("../config");
 const connectDB = require("./db");
-const User = require("../models/User");
-const Product = require("../models/Product");
+const config = require("../config");
+const logger = require("../utils/logger");
+
+const productRoutes = require("../routes/product.routes");
+const userRoutes = require("../routes/user.routes");
+const errorMiddleware = require("../middlewares/error.middleware");
 
 module.exports = async function startApp() {
   const app = express();
 
-  // Load middlewares
   app.use(express.json());
   logger.info("Middlewares loaded");
 
-  // Load DB
   await connectDB();
 
-  app.get("/", (_, res) => {
-    res.send("Server is running");
-  });
+  app.get("/", (_, res) => res.send("Server running"));
+  app.get("/health", (_, res) => res.send("health OK"));
 
-  app.get("/test-db", async (_, res) => {
-    const user = await User.create({
-      firstName: "Test",
-      lastName: "User",
-      email: "test@example.com",
-      password: "password123",
-    });
-    const product = await Product.create({
-      name: "Laptop",
-      status: "active",
-      description: "User interface",
-      price: 20000,
-      ratingCount: 100,
-      ratingSum: 40,
-    });
-    res.json({user,product});
-  });
+  app.use("/products", productRoutes);
+  app.use("/users", userRoutes);
 
-  // Load routes (placeholder)
-  app.get("/health", (_, res) => res.send("OK"));
-  logger.info("Routes mounted: 1 endpoint");
+  logger.info("Routes mounted: /products, /users");
 
-  // Start server
+  app.use(errorMiddleware);
+
   app.listen(config.port, () => {
     logger.info(`Server started on port ${config.port}`);
   });

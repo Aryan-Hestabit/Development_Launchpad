@@ -9,12 +9,8 @@ class UserRepository {
     return User.findById(id);
   }
 
-  findPaginated({ page = 1, limit = 10, status }) {
-    const query = status ? { status } : {};
-    return User.find(query)
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
+  find(query = {}) {
+    return User.find(query);
   }
 
   update(id, data) {
