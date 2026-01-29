@@ -2,6 +2,8 @@ const express = require("express");
 const logger = require("../utils/logger");
 const config = require("../config");
 const connectDB = require("./db");
+const User = require("../models/User");
+const Product = require("../models/Product");
 
 module.exports = async function startApp() {
   const app = express();
@@ -14,7 +16,25 @@ module.exports = async function startApp() {
   await connectDB();
 
   app.get("/", (_, res) => {
-  res.send("Server is running");
+    res.send("Server is running");
+  });
+
+  app.get("/test-db", async (_, res) => {
+    const user = await User.create({
+      firstName: "Test",
+      lastName: "User",
+      email: "test@example.com",
+      password: "password123",
+    });
+    const product = await Product.create({
+      name: "Laptop",
+      status: "active",
+      description: "User interface",
+      price: 20000,
+      ratingCount: 100,
+      ratingSum: 40,
+    });
+    res.json({user,product});
   });
 
   // Load routes (placeholder)
