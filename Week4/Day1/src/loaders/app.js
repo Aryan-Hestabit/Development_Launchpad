@@ -2,13 +2,16 @@ const express = require("express");
 const connectDB = require("./db");
 const config = require("../config");
 const logger = require("../utils/logger");
-
+const applySecurity = require("../middlewares/security");
 const productRoutes = require("../routes/product.routes");
 const userRoutes = require("../routes/user.routes");
 const errorMiddleware = require("../middlewares/error.middleware");
 
 module.exports = async function startApp() {
   const app = express();
+
+  // ✅ Apply security FIRST
+  applySecurity(app);
 
   app.use(express.json());
   logger.info("Middlewares loaded");
