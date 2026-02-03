@@ -7,8 +7,6 @@ module.exports = (app) => {
   // Helmet – secure HTTP headers
   app.use(helmet());
 
-  
-
   // CORS – allow only known origins (example: local dev)
   app.use(
     cors({

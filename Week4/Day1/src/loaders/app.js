@@ -6,6 +6,8 @@ const applySecurity = require("../middlewares/security");
 const productRoutes = require("../routes/product.routes");
 const userRoutes = require("../routes/user.routes");
 const errorMiddleware = require("../middlewares/error.middleware");
+const tracing = require("../utils/tracing");
+
 
 module.exports = async function startApp() {
   const app = express();
@@ -14,6 +16,8 @@ module.exports = async function startApp() {
   applySecurity(app);
 
   app.use(express.json());
+  app.use(tracing);
+  
   logger.info("Middlewares loaded");
 
   await connectDB();
