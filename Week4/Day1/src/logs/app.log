@@ -54,3 +54,11 @@
 [2026-02-02T14:06:49.012Z] INFO: Database connected
 [2026-02-02T14:06:49.012Z] INFO: Routes mounted: /products, /users
 [2026-02-02T14:06:49.014Z] INFO: Server started on port 3000
+[2026-02-03T06:53:53.519Z] INFO: Middlewares loaded
+[2026-02-03T06:53:53.576Z] INFO: Database connected
+[2026-02-03T06:53:53.576Z] INFO: Routes mounted: /products, /users
+[2026-02-03T06:53:53.581Z] INFO: Server started on port 3000
+[2026-02-03T07:31:02.224Z] INFO: Middlewares loaded
+[2026-02-03T07:31:02.263Z] INFO: Database connected
+[2026-02-03T07:31:02.264Z] INFO: Routes mounted: /products, /users
+[2026-02-03T07:31:02.269Z] INFO: Server started on port 3000
