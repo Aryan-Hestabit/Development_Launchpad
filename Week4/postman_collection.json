@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "f96ad9d5-7dc1-4d5f-aeeb-fd7b2ebf654b",
+		"name": "Week4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "51372268",
+		"_collection_link": "https://aryan-hestabit-1590319.postman.co/workspace/Aryan's-Workspace~6da60c30-8e88-4ebc-87d4-7699e36aaa9d/collection/51372268-f96ad9d5-7dc1-4d5f-aeeb-fd7b2ebf654b?action=share&source=collection_link&creator=51372268"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Aryan\",\n  \"lastName\": \"Test\",\n  \"email\": \"aryan@test1.com\",\n  \"password\": \"password123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base}}/users",
+							"host": [
+								"{{Base}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base}}/users/6981e44cc1688bab097bea3a",
+							"host": [
+								"{{Base}}"
+							],
+							"path": [
+								"users",
+								"6981e44cc1688bab097bea3a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test 1\",\n  \"price\": 400,\n  \"tags\": [\"test\", \"a\"]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Base}}/products",
+							"host": [
+								"{{Base}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Base}}/products",
+							"host": [
+								"{{Base}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
