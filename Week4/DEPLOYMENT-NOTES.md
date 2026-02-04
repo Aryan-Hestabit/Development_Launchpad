@@ -35,11 +35,15 @@ PM2 is used to manage the application lifecycle in production.
 ```bash
 pm2 start prod/ecosystem.config.js 
 ```
+![PM2 Start](./Screenshots/PM2_Start.png)
 
 ### Check Status 
 ```bash 
 pm2 status 
 ```
+![PM2 Status](./Screenshots/PM2_Status.png)
+
+![PM2 Status1](./Screenshots/PM2_Status1.png)
 
 ### View Logs 
 ```bash
@@ -60,7 +64,9 @@ Example use cases:
 - Logs are written using Winston 
 - Request-level tracing via X-Request-ID 
 - Logs are grouped by request ID for easier debugging 
-- Output is written to both console and file (src/logs/app.log) 
+- Output is written to both console and file (src/logs/app.log)
+
+Link to Logs - [logs](./Day1/src/logs/app.log)
 
 ## API Documentation 
 - APIs are documented using a Postman Collection 
@@ -72,11 +78,18 @@ Example use cases:
 - Environment variables are used for base URL abstraction 
 
 Export format: 
-- Postman Collection v2.1 (JSON) 
+- Postman Collection v2.1 (JSON)
+link - [Postman Collection](./postman_collection.json)
 
 ## Production Readiness Summary 
 The application is production-ready with:
 - Background job processing 
 - Structured and correlated logging 
 - Secure environment isolation 
-- Process management and clustering Documented APIs Notes PM2 must be restarted after environment changes Redis is mandatory when job queues are enabled Logs should be monitored regularly in production
+- Process management and clustering 
+- Documented APIs 
+
+## Notes
+- PM2 must be restarted after environment changes
+- Redis is mandatory when job queues are enabled 
+- Logs should be monitored regularly in production
