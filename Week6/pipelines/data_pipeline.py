@@ -102,9 +102,6 @@ def run_pipeline(input_path, output_path):
     # Remove duplicates
     df = remove_duplicates(df)
     
-    # Handle outliers
-    df = handle_outliers(df)
-    
     # Save cleaned data
     save_cleaned_data(df, output_path)
     

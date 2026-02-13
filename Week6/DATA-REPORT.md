@@ -1062,4 +1062,4 @@ Outliers were found in multiple Features, such as:
 
 Since **capital.gain** and **capital.loss** consist of mainly **0s** , decided to leave them , will handle them Feature Engineering using Lo Transformation.
 
-
+Also Outliers cannot be handeled in other columns as they consists of real values.
