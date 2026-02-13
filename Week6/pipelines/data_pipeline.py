@@ -41,45 +41,6 @@ def remove_duplicates(df):
     
     return df
 
-def handle_outliers(df):
-    """Handle outliers in numerical features"""
-    print("\n" + "="*60)
-    print("HANDLING OUTLIERS")
-    print("="*60)
-    
-    # Features to handle outliers
-    outlier_features = ['age', 'hours.per.week']
-    
-    for col in outlier_features:
-        # Calculate IQR
-        Q1 = df[col].quantile(0.25)
-        Q3 = df[col].quantile(0.75)
-        IQR = Q3 - Q1
-        
-        lower_bound = Q1 - 1.5 * IQR
-        upper_bound = Q3 + 1.5 * IQR
-
-        print(f"\nlower_bound (before domain constraints) for {col}: {lower_bound:.1f}")
-        print(f"\nupper_bound (before domain constraints) for {col}: {upper_bound:.1f}")
-        
-        # Apply domain constraints
-        if col == 'age':
-            lower_bound = max(17, lower_bound)  # Min working age
-            upper_bound = min(90, upper_bound)  # Max reasonable age
-        elif col == 'hours.per.week':
-            lower_bound = max(1, lower_bound)   # Min 1 hour
-            upper_bound = min(99, upper_bound)  # Max 99 hours
-        
-        # Count outliers before capping
-        outliers_lower = (df[col] < lower_bound).sum()
-        outliers_upper = (df[col] > upper_bound).sum()
-        total_outliers = outliers_lower + outliers_upper
-        
-        # Cap outliers
-        df[col] = df[col].clip(lower=lower_bound, upper=upper_bound)
-        
-        print(f"✅ {col}: Capped {total_outliers} outliers (bounds: [{lower_bound:.1f}, {upper_bound:.1f}])")
-    return df
 
 def save_cleaned_data(df, output_path):
     """Save cleaned dataset"""
