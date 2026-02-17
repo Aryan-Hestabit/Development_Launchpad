@@ -18,21 +18,21 @@ All models use **class_weight='balanced'** (or equivalent) to handle 76:24 class
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
-| Logistic Regression | 0.8049 | 0.5624 | 0.8599 | 0.6799 | 0.9086 |
-| Random Forest | 0.8442 | 0.6819 | 0.6624 | 0.6719 | 0.8967 |
-| XGBoost | 0.8312 | 0.6053 | 0.8616 | 0.7110 | 0.9251 |
-| LightGBM | 0.8278 | 0.5980 | 0.8699 | 0.7088 | 0.9263 |
+| Logistic Regression | 0.8052 | 0.5626 | 0.8599 | 0.6799 | 0.9078 |
+| Random Forest | 0.8360 | 0.6554 | 0.6729 | 0.6639 | 0.8921 |
+| XGBoost | 0.8294 | 0.6019 | 0.8617 | 0.7087 | 0.9233 |
+| LightGBM | 0.8283 | 0.5991 | 0.8671 | 0.7085 | 0.9254 |
 
 ## Test Set Results
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
-| Logistic Regression | 0.8041 | 0.5618 | 0.8469 | 0.6755 | 0.9031 |
-| Random Forest | 0.8399 | 0.6780 | 0.6378 | 0.6572 | 0.8868 |
-| XGBoost | 0.8213 | 0.5911 | 0.8361 | 0.6926 | 0.9168 |
-| LightGBM  | 0.8207 | 0.5877 | 0.8546 | 0.6965 | 0.9208 |
+| Logistic Regression | 0.8012 | 0.5567 | 0.8583 | 0.6754 | 0.9073 |
+| Random Forest | 0.8280 | 0.6321 | 0.6842 | 0.6571 | 0.8882 |
+| XGBoost | 0.8221 | 0.5905 | 0.8525 | 0.6977 | 0.9190 |
+| LightGBM  | 0.8204 | 0.5866 | 0.8603 | 0.6976 | 0.9216 |
 
-lightGBM = Best Model
+XGBoost = Best Model
 
 ## Confusion Matrices
 
