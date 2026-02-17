@@ -1,0 +1,36 @@
+{
+    "model_name": "XGBoost",
+    "method": "Optuna",
+    "baseline_test_metrics": {
+        "accuracy": 0.8220935690815209,
+        "precision": 0.5904590459045904,
+        "recall": 0.852501624431449,
+        "f1": 0.6976867854294071,
+        "roc_auc": 0.9189910231748649
+    },
+    "tuned_cv_f1": 0.7017867397358315,
+    "tuned_test_metrics": {
+        "accuracy": 0.8216241589735566,
+        "precision": 0.5883134130146083,
+        "recall": 0.8635477582846004,
+        "f1": 0.6998420221169036,
+        "roc_auc": 0.921061001485424
+    },
+    "improvement": 0.002155236687496509,
+    "best_params": {
+        "n_estimators": 314,
+        "max_depth": 4,
+        "learning_rate": 0.20468550178980097,
+        "subsample": 0.9997574872404821,
+        "colsample_bytree": 0.9099799609630276,
+        "min_child_weight": 1,
+        "reg_alpha": 0.13766983483500206,
+        "reg_lambda": 0.8480858573298545,
+        "scale_pos_weight": 3.15,
+        "random_state": 42,
+        "eval_metric": "logloss"
+    },
+    "n_trials": 500,
+    "cv_folds": 5,
+    "final_model_used": "tuned"
+}
