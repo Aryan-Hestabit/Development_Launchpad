@@ -9,9 +9,9 @@ This document describes all feature engineering steps applied to the Adult Censu
 ## Dataset Summary
 
 - **Original Dataset**: 32,561 rows, 15 columns
-- **After Cleaning (Day 1)**: 31,978 rows, 15 columns
-- **After Feature Engineering**: 31,978 rows, 60 features
-- **After Feature Selection**: 31,978 rows, 30 features
+- **After Cleaning (Day 1)**: 31,955 rows, 15 columns
+- **After Feature Engineering**: 31,955 rows, 60 features
+- **After Feature Selection**: 31,955 rows, 30 features
 - **Train/Test Split**: 80/20 (25,582 / 6,396 samples)
 
 ---
@@ -296,24 +296,3 @@ Feature Selection (Mutual Information)
 Output: X_train, X_test, y_train, y_test
 ```
 
----
-
-## 10. Code Files
-
-- `build_features.py` - Feature engineering pipeline
-- `feature_selector.py` - Feature selection and train/test split
-
----
-
-## Summary Statistics
-
-| Stage | Features | Samples |
-|-------|----------|---------|
-| Raw data | 15 | 32,561 |
-| After cleaning | 15 | 31,978 |
-| After feature building | 23 | 31,978 |
-| After encoding | 60 | 31,978 |
-| After selection (train) | 30 | 25,582 |
-| After selection (test) | 30 | 6,396 |
-
-**Final train/test datasets ready for Day 3 model training.**
