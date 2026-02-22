@@ -1,0 +1,19 @@
+# Model Configuration
+MODEL_PATH=../models/tuned_model.pkl
+MODEL_VERSION=1.0.0
+
+# Data Paths
+TRANSFORMERS_PATH=../data/processed/transformers.pkl
+FEATURES_PATH=../data/processed/selected_features.json
+TRAIN_DATA_PATH=../data/processed/X_train.csv
+
+# Logging
+LOG_PATH=../logs/prediction_logs.csv
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Monitoring Thresholds
+DRIFT_THRESHOLD_PSI=0.2
+ACCURACY_DECAY_THRESHOLD=0.78

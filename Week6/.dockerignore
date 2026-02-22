@@ -1,0 +1,29 @@
+# Folder to Ignore
+env/
+notebooks/
+pipelines/
+data/raw/
+data/external/
+Screenshots/
+src/
+training/
+tuning/
+utils/
+
+# Evaluation outputs
+evaluation/
+
+models/best_model_info.json
+models/best_model.pkl
+
+finalrequirements.txt
+# Documentation
+*.md
+.env
+# Exclude unnecessary processed data
+data/processed/X_test.csv
+data/processed/y_train.csv
+data/processed/y_test.csv
+data/processed/features_engineered.csv
+data/processed/processed_adult.csv
+data/processed/feature_list.json
