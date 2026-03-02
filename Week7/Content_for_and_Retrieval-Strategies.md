@@ -6,13 +6,13 @@ This document analyzes how the components of the repository work together to sup
 
 ## 1. Core Components 🧩
 
-| Component | Location | Responsibility |
-|-----------|----------|----------------|
-| **Embedder** | `src/embeddings/embedder.py` | Converts text into dense vectors using SentenceTransformers. Implements `embed_documents` and `embed_query` for use in semantic search. |
-| **HybridRetriever** | `src/retriever/hybrid_retriever.py` | Orchestrates retrieval combining semantic (FAISS) and keyword (BM25) methods, applies filters, deduplicates, and triggers reranking. |
-| **Reranker** | `src/retriever/reranker.py` | Scores document-query pairs with a CrossEncoder and sorts results by relevance. |
-| **Context Builder** | `src/pipelines/context_builder.py` | Formats retrieved documents into a concatenated text block for downstream consumption (e.g. LLM prompts). |
-| **Settings** | `src/config/settings.py` | Defines global constants (paths, chunk settings, TOP_K). |
+| Component           | Location                            | Responsibility                                                                                                                          |
+| ------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Embedder**        | `src/embeddings/embedder.py`        | Converts text into dense vectors using SentenceTransformers. Implements `embed_documents` and `embed_query` for use in semantic search. |
+| **HybridRetriever** | `src/retriever/hybrid_retriever.py` | Orchestrates retrieval combining semantic (FAISS) and keyword (BM25) methods, applies filters, deduplicates, and triggers reranking.    |
+| **Reranker**        | `src/retriever/reranker.py`         | Scores document-query pairs with a CrossEncoder and sorts results by relevance.                                                         |
+| **Context Builder** | `src/pipelines/context_builder.py`  | Formats retrieved documents into a concatenated text block for downstream consumption (e.g. LLM prompts).                               |
+| **Settings**        | `src/config/settings.py`            | Defines global constants (paths, chunk settings, TOP_K).                                                                                |
 
 ---
 
