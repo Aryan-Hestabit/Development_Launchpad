@@ -59,13 +59,13 @@ class HybridRetriever:
         print("Initializing semantic retriever (MMR)...")
         self.semantic_retriever = self.vectorstore.as_retriever(
             search_type="mmr",
-            search_kwargs={"k": 10, "fetch_k": 20}
+            search_kwargs={"k": 10, "fetch_k": 30}
         )
 
         print("Building BM25 retriever...")
         all_docs = list(self.vectorstore.docstore._dict.values())
         self.bm25 = BM25Retriever.from_documents(all_docs)
-        self.bm25.k = 5
+        self.bm25.k = 10
 
         print("Loading reranker...")
         self.reranker = Reranker()
