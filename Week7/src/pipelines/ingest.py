@@ -9,6 +9,7 @@ from langchain_community.document_loaders import (
     CSVLoader,
     Docx2txtLoader,
 )
+from langchain_community.docstore import InMemoryDocstore
 import numpy as np
 import faiss
 from langchain_text_splitters import TokenTextSplitter
@@ -151,7 +152,6 @@ def run_ingestion():
     )
 
     # Manually assign docstore
-    from langchain_community.docstore import InMemoryDocstore
 
     docstore = InMemoryDocstore(
         {str(i): doc for i, doc in enumerate(chunked_docs)}
