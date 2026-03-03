@@ -19,11 +19,6 @@ from config.settings import (
     TOP_K, BLIP_MODEL, GEMINI_API_KEY, GEMINI_MODEL,
 )
 
-# ── Models ─────────────────────────────────────────────────────────────────────
-blip_processor = BlipProcessor.from_pretrained(BLIP_MODEL)
-blip_model     = BlipForConditionalGeneration.from_pretrained(BLIP_MODEL)
-blip_model.eval()
-
 if not GEMINI_API_KEY:
     sys.exit("GOOGLE_API_KEY not set in .env")
 client = genai.Client(api_key=GEMINI_API_KEY)
@@ -31,24 +26,36 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 # ── Prompt ─────────────────────────────────────────────────────────────────────
 RAG_PROMPT = PromptTemplate(
     input_variables=["context", "question", "query_caption"],
-    template="""You are an expert image analyst. Using the retrieved context and the Query Image context below from visually similar images, answer the user's question as accurately as possible.
-Query Image Caption: {query_caption},
-
-Retrieved Context:
-{context}
-
-Question: {question}
-
-Answer:"""
+    template=(
+        "You are an expert image analyst. Using the retrieved context and the Query Image context "
+        "below from visually similar images, answer the user's question as accurately as possible.\n"
+        "Query Image Caption: {query_caption},\n\n"
+        "Retrieved Context:\n{context}\n\n"
+        "Question: {question}\n\nAnswer:"
+    )
 )
+
+# ── Lazy BLIP singleton ────────────────────────────────────────────────────────
+_blip_processor = None
+_blip_model     = None
+
+
+def get_blip():
+    global _blip_processor, _blip_model
+    if _blip_model is None:
+        _blip_processor = BlipProcessor.from_pretrained(BLIP_MODEL)
+        _blip_model     = BlipForConditionalGeneration.from_pretrained(BLIP_MODEL)
+        _blip_model.eval()
+    return _blip_processor, _blip_model
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 def caption(img: Image.Image) -> str:
-    inputs = blip_processor(images=img, return_tensors="pt")
+    proc, model = get_blip()
+    inputs = proc(images=img, return_tensors="pt")
     with torch.no_grad():
-        out = blip_model.generate(**inputs, max_new_tokens=80)
-    return blip_processor.decode(out[0], skip_special_tokens=True).strip()
+        out = model.generate(**inputs, max_new_tokens=80)
+    return proc.decode(out[0], skip_special_tokens=True).strip()
 
 
 def ocr(img: Image.Image) -> str:
@@ -151,12 +158,12 @@ def mode_image_to_text(faiss_index, metadata, embedder, top_k):
 # ── Menu ───────────────────────────────────────────────────────────────────────
 MENU = """
 ╔══════════════════════════════════════════╗
-║      🗂️  Multimodal-RAG Image Search     ║
+║          Multimodal-RAG Image Search     ║
 ╠══════════════════════════════════════════╣
-║  1.  Text  → Image                      ║
-║  2.  Image → Image                      ║
-║  3.  Image → Text Answer (Gemini)       ║
-║  q.  Quit                               ║
+║  1.  Text  → Image                       ║
+║  2.  Image → Image                       ║
+║  3.  Image → Text Answer (Gemini)        ║
+║  q.  Quit                                ║
 ╚══════════════════════════════════════════╝
 """
 
@@ -164,6 +171,7 @@ MENU = """
 def main(top_k: int = TOP_K):
     faiss_index, metadata = load_index()
     embedder = CLIPEmbedder()
+    get_blip()   # load BLIP once before menu
 
     print(MENU)
     while True:

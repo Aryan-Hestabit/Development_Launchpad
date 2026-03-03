@@ -42,3 +42,13 @@ GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
 GEMINI_MODEL   = "gemini-2.5-flash"
 GEMINI_MODEL_SQL = "gemini-2.5-flash"
 DB_DIR = BASE_DIR / "src" / "data" / "db"
+
+# Redis
+REDIS_HOST           = "localhost"
+REDIS_PORT           = 6379
+REDIS_DB             = 0
+MEMORY_MAX_MESSAGES  = 10   # 5 turns = 5 user + 5 assistant messages
+
+# Evaluation
+HALLUCINATION_THRESHOLD = 0.4   # confidence below this → hallucination flagged
+CHAT_LOGS_PATH          = BASE_DIR / "CHAT-LOGS.json"
