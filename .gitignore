@@ -5,5 +5,10 @@ __init__.py
 venv/
 Week7/.env
 Week6/env/
-Week7/
-week8/
+Week7/venv
+Week8/venv
+Week8/quantized/model-fp16
+Week8/quantized/model-int4
+Week8/quantized/model-int8
+Week8/quantized/model-fp16.gguf
+Week8/quantized/model_q8_0.gguf
