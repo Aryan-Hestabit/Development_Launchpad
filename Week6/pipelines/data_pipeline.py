@@ -4,7 +4,7 @@ import numpy as np
 def load_data(filepath):
     """Load raw dataset"""
     df = pd.read_csv(filepath)
-    print(f"✅ Data loaded: {df.shape}")
+    print(f" Data loaded: {df.shape}")
     return df
 
 def handle_missing_values(df):
@@ -16,13 +16,13 @@ def handle_missing_values(df):
     # Replace '?' with 'Unknown' for workclass and occupation
     df['workclass'] = df['workclass'].replace('?', 'Unknown')
     df['occupation'] = df['occupation'].replace('?', 'Unknown')
-    print("✅ Replaced '?' with 'Unknown' in workclass and occupation")
+    print(" Replaced '?' with 'Unknown' in workclass and occupation")
     
     # Remove rows where native.country is '?'
     rows_before = len(df)
     df = df[df['native.country'] != '?'].copy()
     rows_removed = rows_before - len(df)
-    print(f"✅ Removed {rows_removed} rows with native.country='?' ({rows_removed/rows_before*100:.2f}%)")
+    print(f" Removed {rows_removed} rows with native.country='?' ({rows_removed/rows_before*100:.2f}%)")
     
     return df
 
@@ -35,9 +35,9 @@ def remove_duplicates(df):
     duplicates = df.duplicated().sum()
     if duplicates > 0:
         df = df.drop_duplicates().copy()
-        print(f"✅ Removed {duplicates} duplicate rows")
+        print(f" Removed {duplicates} duplicate rows")
     else:
-        print("✅ No duplicates found")
+        print(" Removed no duplicates")
     
     return df
 
@@ -45,7 +45,7 @@ def remove_duplicates(df):
 def save_cleaned_data(df, output_path):
     """Save cleaned dataset"""
     df.to_csv(output_path, index=False)
-    print(f"\n✅ Cleaned data saved to: {output_path}")
+    print(f"\n Cleaned data saved to: {output_path}")
     print(f"   Final shape: {df.shape}")
 
 def run_pipeline(input_path, output_path):
@@ -67,7 +67,7 @@ def run_pipeline(input_path, output_path):
     save_cleaned_data(df, output_path)
     
     print("\n" + "=" * 70)
-    print("✅ DATA PIPELINE COMPLETED!")
+    print(" DATA PIPELINE COMPLETED!")
     print("=" * 70)
     
     return df
