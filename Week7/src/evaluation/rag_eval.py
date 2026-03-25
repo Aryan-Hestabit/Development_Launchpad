@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+import numpy as np
 from google import genai
 from langchain_core.prompts import PromptTemplate
 
@@ -32,16 +33,14 @@ REFINEMENT_PROMPT = PromptTemplate(
 )
 
 
-def confidence_score(answer: str, context: str) -> float:
-    if not context or not answer:
+def confidence_score(answer: str, context: str, embedder) -> float:
+    if not answer or not context:
         return 0.0
-    stopwords = {"the","a","an","is","in","it","of","to","and","or","for",
-                 "on","at","by","be","are","was","were","with","this","that"}
-    answer_words  = set(re.findall(r"\b\w+\b", answer.lower())) - stopwords
-    context_words = set(re.findall(r"\b\w+\b", context.lower())) - stopwords
-    if not answer_words:
-        return 0.0
-    return round(len(answer_words & context_words) / len(answer_words), 3)
+
+    answer_vec  = np.array(embedder.embed_query(answer))
+    context_vec = np.array(embedder.embed_query(context[:512]))
+
+    return round(max(float(np.dot(answer_vec, context_vec)), 0.0), 3)
 
 
 def hallucination_detected(score: float) -> bool:

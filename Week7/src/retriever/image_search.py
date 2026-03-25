@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-
+import time
 import faiss
 import numpy as np
 import torch

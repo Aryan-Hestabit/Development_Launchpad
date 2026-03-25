@@ -1,7 +1,5 @@
-from pathlib import Path
-
 from langchain_community.vectorstores import FAISS
-
+import time
 from src.embeddings.embedder import Embedder
 from src.config.settings import (
     VECTORSTORE_PATH,
@@ -51,8 +49,10 @@ if __name__ == "__main__":
 
         if query.lower() == "exit":
             break
-
+        st = time.perf_counter()
         results = engine.search(query)
+        et = time.perf_counter()
+        print(f"\nSearch completed in {et - st:.4f} seconds.")
 
         print("\nTop Results:\n")
 
@@ -61,4 +61,3 @@ if __name__ == "__main__":
             print(f"Score: {res['score']:.4f}")
             print(f"Metadata: {res['metadata']}")
             print(f"Preview: {res['preview'][:200]}")
-            print("-" * 60)

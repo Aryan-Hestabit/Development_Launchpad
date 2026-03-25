@@ -1,6 +1,6 @@
 from langchain_community.vectorstores import FAISS
 from langchain_community.retrievers import BM25Retriever
-
+import time
 from src.embeddings.embedder import Embedder
 from src.retriever.reranker import Reranker
 from src.config.settings import VECTORSTORE_PATH, TOP_K
@@ -78,6 +78,7 @@ class HybridRetriever:
 
     def retrieve(self, query: str, top_k: int = TOP_K, filters: dict = None):
 
+        st = time.perf_counter()
         # Semantic retrieval
         semantic_docs = self.semantic_retriever.invoke(query)
 
@@ -95,5 +96,6 @@ class HybridRetriever:
 
         # Rerank
         reranked_docs = self.reranker.rerank(query, merged_docs)
-
+        et = time.perf_counter()
+        print(f"\nSearch completed in {et - st:.4f} seconds.")
         return reranked_docs[:top_k]

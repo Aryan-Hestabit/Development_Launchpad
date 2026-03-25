@@ -3,16 +3,10 @@ import json
 from pathlib import Path
 import re
 
-from langchain_community.document_loaders import (
-    PyPDFLoader,
-    TextLoader,
-    CSVLoader,
-    Docx2txtLoader,
-)
-from langchain_community.docstore import InMemoryDocstore
+from langchain_community.document_loaders import (PyPDFLoader,TextLoader,CSVLoader,Docx2txtLoader)
 import numpy as np
 import faiss
-from langchain_text_splitters import TokenTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 import faiss
@@ -28,11 +22,7 @@ from src.config.settings import (
 
 CHUNK_FILE = os.path.join(CHUNK_OUTPUT_PATH, "chunks.json")
 
-
-# ==============================
 # DOCUMENT LOADING
-# ==============================
-
 def load_documents_from_directory(directory: str):
     documents = []
 
@@ -58,10 +48,7 @@ def load_documents_from_directory(directory: str):
     return documents
 
 
-# ==============================
 # TEXT CLEANING
-# ==============================
-
 def clean_text(text: str) -> str:
     text = text.replace("\r\n", "\n").replace("\r", "\n")
     text = re.sub(r"\n{3,}", "\n", text)
@@ -69,14 +56,12 @@ def clean_text(text: str) -> str:
     return text.strip()
 
 
-# ==============================
 # CHUNKING
-# ==============================
-
 def chunk_documents(documents):
-    splitter = TokenTextSplitter(
+    splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE,
-        chunk_overlap=CHUNK_OVERLAP
+        chunk_overlap=CHUNK_OVERLAP,
+        separators=["\n\n", "\n", " ", ""]
     )
 
     chunked_docs = []
@@ -96,10 +81,7 @@ def chunk_documents(documents):
     return chunked_docs
 
 
-# ==============================
 # SAVE CHUNKS (Optional Debug)
-# ==============================
-
 def save_chunks(chunked_docs):
     os.makedirs(CHUNK_OUTPUT_PATH, exist_ok=True)
 
@@ -114,10 +96,7 @@ def save_chunks(chunked_docs):
     print(f"Saved chunks to {CHUNK_FILE}")
 
 
-# ==============================
 # MAIN INGEST FUNCTION
-# ==============================
-
 def run_ingestion():
 
     print("Loading documents...")
@@ -133,34 +112,14 @@ def run_ingestion():
     print("Loading embedder...")
     embedder = Embedder()
 
-    print("Generating embeddings...")
-    texts = [doc.page_content for doc in chunked_docs]
-    embeddings = embedder.embed_documents(texts)
-    embeddings = np.array(embeddings).astype("float32")
+    print("Building FAISS vectorstore...")
+    vectorstore = FAISS.from_documents(chunked_docs, embedder)
 
-    dimension = embeddings.shape[1]
-
-    print("Building FAISS IndexFlatIP...")
-    index = faiss.IndexFlatIP(dimension)
-    index.add(embeddings)
-
-    vectorstore = FAISS(
-        embedding_function=embedder,
-        index=index,
-        docstore=None,
-        index_to_docstore_id=None,
-    )
-
-    # Manually assign docstore
-
-    docstore = InMemoryDocstore(
-        {str(i): doc for i, doc in enumerate(chunked_docs)}
-    )
-
-    vectorstore.docstore = docstore
-    vectorstore.index_to_docstore_id = {
-        i: str(i) for i in range(len(chunked_docs))
-    }
+    # Swap IndexFlatL2 → IndexFlatIP for cosine similarity
+    vectors   = vectorstore.index.reconstruct_n(0, vectorstore.index.ntotal)
+    new_index = faiss.IndexFlatIP(vectors.shape[1])
+    new_index.add(vectors.astype(np.float32))
+    vectorstore.index = new_index
 
     os.makedirs(VECTORSTORE_PATH, exist_ok=True)
 

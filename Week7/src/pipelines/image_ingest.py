@@ -85,7 +85,7 @@ def run_ingestion(images_dir: Path = IMAGES_DIR):
         fused_vecs.append(fused)
 
     # Build FAISS IndexFlatIP (exact cosine sim on L2-normalised vectors)
-    dim          = fused_vecs[0].shape[0]   # 512
+    dim          = fused_vecs[0].shape[0]  
     faiss_index  = faiss.IndexFlatIP(dim)
     faiss_index.add(np.array(fused_vecs, dtype=np.float32))
 

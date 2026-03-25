@@ -22,8 +22,8 @@ IMAGE_FAISS_INDEX = VECTORSTORE_PATH / "image.index"
 LOGS_PATH = BASE_DIR / "src" / "logs"
 
 # Chunking
-CHUNK_SIZE    = 600
-CHUNK_OVERLAP = 100
+CHUNK_SIZE    = 1000
+CHUNK_OVERLAP = 150
 
 # Retrieval
 TOP_K = 5
@@ -47,7 +47,7 @@ DB_DIR = BASE_DIR / "src" / "data" / "db"
 REDIS_HOST           = "localhost"
 REDIS_PORT           = 6379
 REDIS_DB             = 0
-MEMORY_MAX_MESSAGES  = 10   # 5 turns = 5 user + 5 assistant messages
+MEMORY_MAX_MESSAGES  = 10   
 
 # Evaluation
 HALLUCINATION_THRESHOLD = 0.4   # confidence below this → hallucination flagged
