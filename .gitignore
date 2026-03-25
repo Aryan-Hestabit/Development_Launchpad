@@ -3,4 +3,7 @@ env/
 __pycache__/
 __init__.py
 venv/
-WEEK7/.env
+Week7/.env
+Week6/env/
+Week7/
+week8/
