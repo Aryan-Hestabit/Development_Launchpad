@@ -1,0 +1,30 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+def process_user_data(file_path):
+    if not os.path.exists(file_path):
+        print(f"Error: {file_path} not found.")
+        return
+
+    # Read the CSV
+    df = pd.read_csv(file_path)
+    
+    # Print summary statistics
+    print("Summary Statistics:")
+    print(df.describe())
+    
+    # Create distribution plot for numerical columns
+    numerical_cols = df.select_dtypes(include=['float64', 'int64']).columns
+    
+    for col in numerical_cols:
+        plt.figure(figsize=(8, 4))
+        df[col].hist(bins=20, edgecolor='black')
+        plt.title(f'Distribution of {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frequency')
+        plt.savefig(f'{col}_distribution.png')
+        print(f"Graph saved as {col}_distribution.png")
+        plt.close()
+
+process_user_data('user_data.csv')

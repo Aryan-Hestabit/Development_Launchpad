@@ -1,0 +1,11 @@
+2026-03-30 00:41:06 | SESSION START | id=8820b30b-41ea-4c12-ae02-fd2e6ed8d753
+2026-03-30 00:41:29 | [TURN 001] [USER] Hey my name is Anjali
+2026-03-30 00:41:30 | [TURN 001] [AGENT] Nice to meet you, Anjali! I've noted your name. How can I help you today?
+2026-03-30 00:41:35 | [TURN 002] [USER] What is my Name
+2026-03-30 00:41:37 | [TURN 002] [AGENT] Your name is Anjali!
+2026-03-30 00:41:57 | [TURN 003] [USER] what was the the name i told you first ?
+2026-03-30 00:41:58 | [TURN 003] [AGENT] You told me your name was Anjali!
+2026-03-30 00:42:04 | [TURN 004] [USER] before Anjali ?
+2026-03-30 00:42:06 | [TURN 004] [AGENT] Based on our current conversation, **Anjali** is the only name you have provided to me. I don't have a record of you mentioning any other name before that.
+2026-03-30 00:42:43 | [TURN 005] [USER] What was the company i was talking about ?
+2026-03-30 00:42:44 | [TURN 005] [AGENT] You haven't mentioned a company to me yet in our conversation. If you'd like to tell me about it, I'm happy to listen!
