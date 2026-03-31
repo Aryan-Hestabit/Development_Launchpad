@@ -1,7 +1,0 @@
-2026-03-30 00:54:47 | SESSION START | id=a1ec6822-7698-41d1-b44c-5422bbeb5cf2
-2026-03-30 00:55:06 | [TURN 001] [USER] what is my name ?
-2026-03-30 00:55:08 | [TURN 001] [AGENT] [USER] what is my name ?
-[AGENT] (None)
-[LONG-TERM MEMORY] User's name is Alex.
-
-Based on what I know about you, your name is Alex.

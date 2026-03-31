@@ -28,7 +28,7 @@ gemini_client = OpenAIChatCompletionClient(
     model_info=settings.MODEL_INFO
 )
 
-async def extract_facts(user_message: str, agent_response: str, client = settings.gemini_client) -> List[Dict[str, str]]:
+async def extract_facts(user_message: str, agent_response: str, client = gemini_client) -> List[Dict[str, str]]:
     exchange = f"USER: {user_message.strip()}\nAGENT: {agent_response.strip()}"
 
     try:

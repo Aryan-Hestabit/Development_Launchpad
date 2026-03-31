@@ -2,6 +2,7 @@ import os
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from Config import settings
+from autogen_core.model_context import BufferedChatCompletionContext
 # 1. Model Client
 gemini_client = OpenAIChatCompletionClient(
     model=settings.MODEL_ID,
@@ -60,5 +61,7 @@ file_agent = AssistantAgent(
     - Use 'write_to_file' if you need to create or add content to a file.
     - Provide a clear summary of the file contents.
     - After finishing, return control to @primary_agent.
-    """
+    """,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

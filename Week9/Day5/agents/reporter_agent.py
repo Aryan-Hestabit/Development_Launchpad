@@ -1,6 +1,7 @@
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
+from autogen_core.model_context import BufferedChatCompletionContext
 from Config import settings
 
 _REPORTER_PROMPT = """
@@ -20,6 +21,8 @@ INSTRUCTIONS:
 - Do not use tools to read files. Use the provided chat context.
 - Use professional, high-level business language.
 - Provide the final output in a clear Markdown block so the user can easily copy it.
+
+After the report is generated , end With "TERMINATE" to signal the end of the project.
 """
 # 1. Model Client
 gemini_client = OpenAIChatCompletionClient(
@@ -36,6 +39,8 @@ qwen_client = OllamaChatCompletionClient(
 
 reporter_agent = AssistantAgent(
     name="reporter_agent",
-    model_client=settings.gemini_client,
-    system_message=_REPORTER_PROMPT
+    model_client=gemini_client,
+    system_message=_REPORTER_PROMPT,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

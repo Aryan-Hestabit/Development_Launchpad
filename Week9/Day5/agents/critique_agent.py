@@ -2,6 +2,7 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
 from Config import settings
+from autogen_core.model_context import BufferedChatCompletionContext
 
 CRITIQUE_PROMPT = """
 You are the @critique_agent of NEXUS AI. 
@@ -36,6 +37,8 @@ qwen_client = OllamaChatCompletionClient(
 
 critique_agent = AssistantAgent(
     name="critique_agent",
-    model_client=settings.gemini_client,
-    system_message=CRITIQUE_PROMPT
+    model_client=gemini_client,
+    system_message=CRITIQUE_PROMPT,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

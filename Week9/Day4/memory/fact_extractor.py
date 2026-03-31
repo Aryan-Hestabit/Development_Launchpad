@@ -1,29 +1,34 @@
 import json
 import re
 from typing import List, Dict
-
 from autogen_core.models import SystemMessage, UserMessage
+from Config import settings
 from autogen_ext.models.openai import OpenAIChatCompletionClient
-from Config import settings 
 
 _SYSTEM_PROMPT = """
-You are a memory extraction assistant.
-Read one conversation exchange and extract ONLY facts worth remembering long-term.
+You are a memory extraction assistant. 
+Read the conversation and extract ONLY facts worth remembering.
 
 Rules:
-- Personal info (name, location, job), preferences, topics being studied, explicit instructions.
-- Do NOT extract transient or obvious conversational content.
-- One fact per item, one sentence each.
-- Category must be exactly one of: personal, preference, fact, topic, instruction.
+1. USER FACTS: Name, location, job, preferences, goals.
+2. ENVIRONMENTAL FACTS: Specific file paths mentioned, database names used, or tool configurations established (e.g., "The data is in /workspace/data.csv").
+3. PERMANENCE: Do NOT extract "Hello", "Thank you", or temporary step-by-step logic.
+4. One fact per item, one sentence each.
+5. Category: personal, preference, fact, topic, instruction, environment.
 
-Respond ONLY with a valid JSON array, no markdown, no explanation:
+Respond ONLY with a valid JSON array:
 [{"content": "<fact>", "category": "<category>"}, ...]
-
-If nothing worth storing: []
+If nothing is worth storing, respond exactly with: []
 """
+# 1. Model Client
+gemini_client = OpenAIChatCompletionClient(
+    model=settings.MODEL_ID,
+    api_key=settings.GEMINI_API_KEY,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    model_info=settings.MODEL_INFO
+)
 
-
-async def extract_facts(user_message: str, agent_response: str, client: OpenAIChatCompletionClient = settings.gemini_client) -> List[Dict[str, str]]:
+async def extract_facts(user_message: str, agent_response: str, client = settings.gemini_client) -> List[Dict[str, str]]:
     exchange = f"USER: {user_message.strip()}\nAGENT: {agent_response.strip()}"
 
     try:
@@ -33,21 +38,22 @@ async def extract_facts(user_message: str, agent_response: str, client: OpenAICh
                 UserMessage(content=exchange, source="extractor"),
             ]
         )
+        # Suggestion 2: Regex Cleaner for Markdown JSON blocks
         raw = result.content
+        raw = re.sub(r"```json|```", "", raw).strip()
 
         if not raw or raw == "[]":
             return []
 
-        allowed = {"personal", "preference", "fact", "topic", "instruction"}
+        parsed = json.loads(raw)
+        allowed = {"personal", "preference", "fact", "topic", "instruction", "environment"}
+        
         return [
-            {"content": item["content"], "category": item["category"]}
-            for item in json.loads(raw)
-            if isinstance(item, dict)
-            and item.get("category") in allowed
+            item for item in parsed 
+            if isinstance(item, dict) 
+            and item.get("category") in allowed 
             and len(item.get("content", "").strip()) > 5
         ]
-
     except Exception as e:
-        # Never crash the main chat loop
-        print(f"[FactExtractor] Skipped: {e}")
+        print(f"[FactExtractor] Error: {e}")
         return []

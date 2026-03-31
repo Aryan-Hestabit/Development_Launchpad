@@ -2,6 +2,7 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
 from Config import settings
+from autogen_core.model_context import BufferedChatCompletionContext
 
 # THE STRATEGIC BLUEPRINT
 # This prompt defines the hierarchy and ensures the Planner knows 
@@ -37,6 +38,8 @@ You must respond with a 'NEXUS ROADMAP' using this structure:
 - Task 3: [Description] -> Assigned to @[Agent]
 
 Wait for the @orchestrator to signal task completion before moving to the next level.
+
+Completion Output : If the objective has been Completed just Output "TERMINATE" .
 """
 
 # 1. Model Client
@@ -52,10 +55,13 @@ qwen_client = OllamaChatCompletionClient(
     host="http://127.0.0.1:11434",
 )
 
-
-# Define the agent instance
-planner_agent = AssistantAgent(
-    name="planner_agent",
-    model_client=settings.gemini_client,  # Planner needs high reasoning (Gemini/GPT-4)
-    system_message=_PLANNER_SYSTEM_MESSAGE
-)
+def get_planner(session_memory, faiss_memory):
+    return AssistantAgent(
+        name="planner_agent",
+        model_client=gemini_client,
+        system_message=_PLANNER_SYSTEM_MESSAGE,
+        # NATIVE MEMORY ATTACHMENT
+        memory=[session_memory, faiss_memory],
+        model_context=BufferedChatCompletionContext(buffer_size=10),
+        model_client_stream=True
+    )

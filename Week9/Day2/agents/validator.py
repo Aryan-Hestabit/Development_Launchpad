@@ -13,5 +13,6 @@ Constraint: Your response is what the user sees. Make it professional.
 validator_agent = AssistantAgent(
     name="validator_agent",
     model_client=model_client,
-    system_message=VALIDATOR_PROMPT
+    system_message=VALIDATOR_PROMPT,
+    model_client_stream=True
 )

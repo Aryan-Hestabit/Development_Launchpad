@@ -1,6 +1,6 @@
 import os
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyC0KGYhoID8Sc7tb3F6B-dTIxK4Ypsg3rs")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyCQtlUs-hvBxWZiXYQjg54kuVL8cQd5kgU")
 MODEL_ID = "gemini-3.1-flash-lite-preview"
 
 

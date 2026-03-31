@@ -2,23 +2,19 @@ import asyncio
 import logging
 import os
 import uuid
-
+from autogen_core.memory import MemoryMimeType
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.messages import TextMessage
 from autogen_core import CancellationToken
 from autogen_core.model_context import BufferedChatCompletionContext
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from Config import settings
-from memory.session_memory import build_session_memory, add_to_session 
+from memory.session_memory import build_session_memory, add_to_session
 from memory.vector_store import FAISSVectorMemory 
 from memory.fact_extractor import extract_facts
+from autogen_core.memory import MemoryContent
 
-# =============================================================================
 # CONFIG
-# =============================================================================
-
-MAIN_MODEL      = "gpt-4.1"
-DB_PATH         = os.path.join(os.path.dirname(__file__), "memory", "long_term.db")
 LOGS_DIR        = os.path.join(os.path.dirname(__file__), "memory", "logs")
 
 SYSTEM_PROMPT = """
@@ -31,6 +27,14 @@ Before each response you receive two memory injections:
 Use both naturally. When recalling long-term facts say:
 "Based on what I know about you…" or "Since you prefer…"
 """
+
+# 1. Model Client
+gemini_client = OpenAIChatCompletionClient(
+    model=settings.MODEL_ID,
+    api_key=settings.GEMINI_API_KEY,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    model_info=settings.MODEL_INFO
+)
 
 # =============================================================================
 # LOGGING — file only, conversation turns + facts, nothing else
@@ -48,13 +52,7 @@ def setup_logging(session_id: str) -> logging.Logger:
     logger.addHandler(handler)
     return logger
 
-
-# =============================================================================
-# MAIN
-# =============================================================================
-
-async def main() -> None:
-
+async def main():
     # --- Logging + session ID ------------------------------------------------
     session_id = str(uuid.uuid4())
     logger     = setup_logging(session_id)
@@ -65,16 +63,9 @@ async def main() -> None:
     # --- Memory initialisation -----------------------------------------------
     session_memory = build_session_memory()
 
-    faiss_memory = FAISSVectorMemory(db_path=DB_PATH, top_k=5, score_threshold=0.4)
+    faiss_memory = FAISSVectorMemory(top_k=5, score_threshold=0.2)
     faiss_memory.initialize()
 
-    # --- Agent ---------------------------------------------------------------
-    # BufferedChatCompletionContext(buffer_size=10):
-    #   Limits raw LLM message window to last 10 messages.
-    #   Ref: autogen docs — "Using Model Context" in Agents tutorial.
-    #
-    # memory=[session_memory, faiss_memory]:
-    #   AutoGen calls update_context() on both before every LLM invocation.
     agent = AssistantAgent(
         name="MemoryAgent",
         model_client=settings.gemini_client,
@@ -84,69 +75,57 @@ async def main() -> None:
         model_client_stream=True,
     )
 
-    print(f"  Long-term facts loaded: {faiss_memory.fact_count}")
     print("  Commands: 'facts' | 'quit'\n")
 
     turn = 0
-
-    # --- Chat loop -----------------------------------------------------------
+    
     while True:
-
-        try:
-            user_input = input("🧑 You: ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\n👋 Bye.")
-            break
-
-        if not user_input:
-            continue
-        if user_input.lower() == "quit":
-            break
+        user_input = input("🧑 You: ").strip()
+        if not user_input: continue
+        if user_input.lower() == "quit" or user_input.lower() == "exit": break
+        
+        # REQUIREMENT: 'facts' command retrieves all from SQLite
         if user_input.lower() == "facts":
-            faiss_memory.display_all()
+            rows = faiss_memory.get_all_facts()
+            print(f"\n--- ALL STORED FACTS ({len(rows)}) ---")
+            for r in rows:
+                print(f"[{r[0].upper()}] {r[1]} ({r[2][:10]})")
+            print("-------------------------------\n")
             continue
 
         turn += 1
-
-        # Log user turn + add to session memory
         logger.info(f"[TURN {turn:03d}] [USER] {user_input}")
-        await add_to_session(session_memory, "USER", user_input)
 
-        # Run agent
-        # AutoGen internally calls before the LLM:
-        #   session_memory.update_context() → injects session turns as SystemMessage
-        #   faiss_memory.update_context()   → FAISS search, injects top-k facts
-        #   BufferedChatCompletionContext   → provides last 10 raw LLM messages
-        print("\n🤖 Agent: ", end="", flush=True)
+        # 1. RUN AGENT 
         try:
             response = await agent.on_messages(
                 [TextMessage(content=user_input, source="user")],
                 CancellationToken(),
             )
-            agent_response: str = response.chat_message.content
-            print(agent_response)
+            agent_res = response.chat_message.content
+            print(f"\n🤖 Agent: {agent_res}\n")
         except Exception as e:
-            print(f"\n[Error: {e}]")
+            print(f"Error: {e}")
             continue
 
-        # Log agent turn + add to session memory
-        logger.info(f"[TURN {turn:03d}] [AGENT] {agent_response}")
-        await add_to_session(session_memory, "AGENT", agent_response)
+        # 2. UPDATE SESSION MEMORY (Short-term)
+        await add_to_session(session_memory, "USER", user_input)
+        await add_to_session(session_memory, "AGENT", agent_res)
+        logger.info(f"[TURN {turn:03d}] [AGENT] {agent_res}")
 
-        # Extract facts → store to SQLite + FAISS simultaneously via store_facts()
-        facts = await extract_facts(user_input, agent_response)
-        if facts:
-            await faiss_memory.store_facts(facts, session_id, turn)
-            for fact in facts:
-                logger.info(f"[TURN {turn:03d}] [FACT] [{fact['category']}] {fact['content']}")
-            print(f"\n  💾 {len(facts)} fact(s) stored → {[f['category'] for f in facts]}")
-
-        print()
-
-    # --- Cleanup -------------------------------------------------------------
-    logger.info(f"SESSION END | id={session_id} | turns={turn}")
-    await faiss_memory.close()
-    print(f"\n✅ Done | Turns: {turn} | Log: memory/logs/session_{session_id}.log\n")
+        new_facts = await extract_facts(user_input, agent_res)
+        if new_facts:
+            # We await the storage to ensure the DB is 100% updated 
+            # before the next 'input()' prompt appears.
+            for f in new_facts:
+                await faiss_memory.add(MemoryContent(
+                    content=f["content"], 
+                    mime_type=MemoryMimeType.TEXT, 
+                    metadata={"category": f["category"]}
+                ))
+            print(f" ✅ {len(new_facts)} facts stored.")
+        else:
+            print(" ℹ️ No new facts found.")
 
 
 if __name__ == "__main__":

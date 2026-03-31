@@ -6,6 +6,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
 from autogen_core.tools import FunctionTool
 from Config import settings
+from autogen_core.model_context import BufferedChatCompletionContext
 
 
 # --- TOOLS FOR ANALYST ---
@@ -73,9 +74,9 @@ qwen_client = OllamaChatCompletionClient(
 
 analyst_agent = AssistantAgent(
     name="analyst_agent",
-    model_client=settings.gemini_client,
+    model_client=gemini_client,
     system_message=ANALYST_PROMPT,
     tools=[csv_tool, sql_tool],
-    reflect_on_tool_use=True,
-    max_tool_iterations= 4
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

@@ -1,8 +1,0 @@
-2026-03-29 20:54:26 | SESSION START | id=1312c1e7-7314-4718-8696-2e5100c21bc9
-2026-03-29 20:54:42 | [TURN 001] [USER] hey my name is Anjali
-2026-03-29 20:54:43 | [TURN 001] [AGENT] Hi Anjali! It's nice to meet you. How are you doing today?
-2026-03-29 20:54:53 | [TURN 001] [FACT] [personal] The user's name is Anjali.
-2026-03-29 20:55:07 | [TURN 002] [USER] what is my name ?
-2026-03-29 20:55:09 | [TURN 002] [AGENT] Your name is Anjali!
-2026-03-29 20:55:11 | [TURN 002] [FACT] [personal] The user's name is Anjali.
-2026-03-29 22:03:47 | SESSION END | id=1312c1e7-7314-4718-8696-2e5100c21bc9 | turns=2

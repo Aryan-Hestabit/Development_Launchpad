@@ -1,5 +1,8 @@
 from autogen_agentchat.agents import AssistantAgent
+from autogen_ext.models.openai import OpenAIChatCompletionClient
+from autogen_ext.models.ollama import OllamaChatCompletionClient
 from Config import settings
+from autogen_core.model_context import BufferedChatCompletionContext
 
 _OPTIMIZER_PROMPT = """
 You are the @optimizer_agent of NEXUS AI. 
@@ -24,8 +27,23 @@ STATUS CODES:
 - [MAXIMIZED]: The output has reached peak efficiency.
 """
 
+# 1. Model Client
+gemini_client = OpenAIChatCompletionClient(
+    model=settings.MODEL_ID,
+    api_key=settings.GEMINI_API_KEY,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    model_info=settings.MODEL_INFO
+)
+
+qwen_client = OllamaChatCompletionClient(
+    model="qwen2.5:7b",
+    host="http://127.0.0.1:11434",
+)
+
 optimizer_agent = AssistantAgent(
     name="optimizer_agent",
-    model_client=settings.gemini_client,
-    system_message=_OPTIMIZER_PROMPT
+    model_client=gemini_client,
+    system_message=_OPTIMIZER_PROMPT,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

@@ -10,7 +10,7 @@ async def run_system():
     await docker_executor.start()
     
     try:
-        query = "Write a python Function to read a csv file named 'user_data.csv' and print the summary statistics also create a graph displaying distribution of the column data. The file is located in the workspace directory."
+        query = "create a db"
         # 2. Run the team
         await Console(team.run_stream(task=query))
     except openai.RateLimitError:

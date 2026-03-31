@@ -16,5 +16,6 @@ Output: Provide a 'Critique' list. If the work is excellent, state 'NO IMPROVEME
 reflection_agent = AssistantAgent(
     name="reflection_agent",
     model_client=model_client,
-    system_message=REFLECTION_PROMPT
+    system_message=REFLECTION_PROMPT,
+    model_client_stream=True
 )

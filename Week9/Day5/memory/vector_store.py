@@ -92,18 +92,12 @@ class FAISSVectorMemory(Memory):
         return MemoryQueryResult(results=results)
 
     async def update_context(self, model_context: ChatCompletionContext) -> None:
-        print(f"\nDebug Start")
         """Standard AutoGen hook to inject facts into the prompt."""
         messages = await model_context.get_messages()
         last_user = next((str(m.content) for m in reversed(messages) if getattr(m, "source", None) == "user"), None)
         
-        print(f"Last user message for memory recall: '{last_user}'")
-        if not last_user:
-            print(f"No user message found in context for memory recall.")
-            return
-        
         mem_results = await self.query(last_user)
-        print(f"\n  [Memory Query] Retrieved {len(mem_results.results)} relevant fact(s) for query: '{last_user}'")
+
         if not mem_results.results: 
             print(f"No relevant facts found for memory recall.")
             return
@@ -113,8 +107,6 @@ class FAISSVectorMemory(Memory):
         context_str += "\n[END MEMORY]\n"
 
         await model_context.add_message(SystemMessage(content=context_str))
-        if mem_results.results:
-            print(f"\n  [Memory Injection] Recalled {len(mem_results.results)} fact(s) into context.")
 
     def get_all_facts(self):
         """Returns all facts for the 'facts' command."""

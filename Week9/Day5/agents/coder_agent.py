@@ -4,7 +4,7 @@ from autogen_ext.models.ollama import OllamaChatCompletionClient
 from autogen_agentchat.agents import CodeExecutorAgent, ApprovalRequest, ApprovalResponse
 from autogen_ext.code_executors.docker import DockerCommandLineCodeExecutor
 from Config import settings
-from Day4_check.main import SYSTEM_PROMPT
+from autogen_core.model_context import BufferedChatCompletionContext
 
 # 1. Define the Docker Executor
 # We specify the work_dir (Volume Mapping) and the base image
@@ -77,4 +77,6 @@ code_agent = CodeExecutorAgent(
     supported_languages=["python", "bash", "sh"],
     # Requirement 4: Auto-install packages within the code blocks
     system_message=CODER_PROMPT,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

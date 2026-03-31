@@ -1,6 +1,7 @@
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
+from autogen_core.model_context import BufferedChatCompletionContext
 from Config import settings
 
 VALIDATOR_PROMPT = """
@@ -32,6 +33,8 @@ qwen_client = OllamaChatCompletionClient(
 
 validator_agent = AssistantAgent(
     name="validator_agent",
-    model_client=settings.gemini_client,
-    system_message=VALIDATOR_PROMPT
+    model_client=gemini_client,
+    system_message=VALIDATOR_PROMPT,
+    model_context=BufferedChatCompletionContext(buffer_size=10),
+    model_client_stream=True
 )

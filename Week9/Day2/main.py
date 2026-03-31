@@ -12,6 +12,7 @@ async def main():
     # 1. DYNAMIC PLANNING
     print("📋 Planner is deciding how many workers to hire...")
     plan_res = await planner_agent.on_messages([TextMessage(content=user_query, source="user")], None)
+    print(f"\n{plan_res}\n")
     print(f"Planner's response:\n{plan_res.chat_message.content}")
     
     # Parse the JSON plan
