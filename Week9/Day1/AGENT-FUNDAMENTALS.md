@@ -1,54 +1,62 @@
 # Agent Fundamentals - Day 1
 
 ## Overview
-This document outlines the fundamentals of the multi-agent system implemented in Day 1. The system consists of three specialized agents working together in a round-robin group chat to process user queries through research, summarization, and final answer generation.
+This document outlines the fundamentals of the multi-agent system implemented in Day 1. The system uses three specialized agents in a round-robin workflow, each focused on one stage of the pipeline:
+- Research
+- Summarization
+- Final answer synthesis
 
 ## System Architecture
 
 ### Main Entry Point (`main.py`)
-- **Framework**: Uses AutoGen AgentChat library
-- **Model**: Mistral via Ollama (localhost:11434)
-- **Chat Type**: RoundRobinGroupChat with 3 agents
-- **Termination**: TextMentionTermination("TERMINATE") with max_turns=3
-- **Interface**: Console-based interactive loop
+- **Framework**: AutoGen AgentChat (console-based)
+- **Agents**: `research_agent`, `summarizer_agent`, `answer_agent`
+- **Chat Coordinator**: `RoundRobinGroupChat`
+- **Termination**: `TextMentionTermination("TERMINATE")` or `max_turns=3`
+- **User loop**: interactive input (exit/quit to stop)
 
-### Agents Overview
+### Shared Settings (`settings.py`)
+- `GEMINI_API_KEY` from environment or default placeholder
+- `MODEL_ID` = `gemini-3.1-flash-lite-preview`
+- `MODEL_INFO` includes vision, function_calling=false, json_output=true, structured_output=true
 
-#### 1. Research Agent (`research_agent.py`)
+### Agent Implementation Details
+All three agents are built with `AssistantAgent` and default to Gemini API client (`OpenAIChatCompletionClient`) from `autogen_ext.models.openai`.
+
+#### 1. Research Agent (`agents/research_agent.py`)
 - **Role**: Expert Senior Research Analyst
-- **Task**: Provide exhaustive, factual, and detailed information (400-600 words)
-- **Focus**: Technical specifications, historical context, current trends
-- **Constraint**: No summarization - provide raw depth
-- **Memory**: BufferedChatCompletionContext with buffer_size=10
-- **Model**: Mistral (streaming enabled)
+- **Prompt**: deep technical research (400-600 words), with historical context
+- **Constraint**: no summarization
+- **Model client**: `gemini_client` (OpenAIChatCompletionClient, `model=settings.MODEL_ID`)
+- **Memory**: `BufferedChatCompletionContext(buffer_size=10)`
+- **Streaming**: true
+- **Unused client**: `mistral_client` is defined but not used
 
-#### 2. Summarizer Agent (`summarizer_agent.py`)
+#### 2. Summarizer Agent (`agents/summarizer_agent.py`)
 - **Role**: Information Architect & Summarizer
-- **Task**: Distill long-form research into structured summaries
-- **Format**: Bullet points for readability
-- **Constraint**: Reduce word count by 60%, maintain all key facts, no external knowledge
-- **Model**: Mistral (streaming enabled)
+- **Prompt**: condense research to bullet points, reduce word count by ~60%
+- **Constraint**: preserve key facts, no new facts
+- **Model client**: `gemini_client` (OpenAIChatCompletionClient)
+- **Streaming**: true
+- **Unused client**: `mistral_client` is defined but not used
 
-#### 3. Answer Agent (`answer_agent.py`)
+#### 3. Answer Agent (`agents/answer_agent.py`)
 - **Role**: Final Communications Lead
-- **Task**: Convert summarized reports into direct user answers
-- **Constraint**: Professional tone, no new information, end with "TERMINATE"
-- **Model**: Mistral (streaming enabled)
+- **Prompt**: create final answer from summary, do not add new info
+- **Constraint**: professional tone, end response with `TERMINATE`
+- **Model client**: `gemini_client` (OpenAIChatCompletionClient)
+- **Streaming**: true
+- **Unused client**: `mistral` is defined but not used
 
 ## Agent Interaction Flow
-1. **User Query** → Research Agent (gathers comprehensive information)
-2. **Research Output** → Summarizer Agent (condenses into bullet points)
-3. **Summary** → Answer Agent (formats final response + "TERMINATE")
+1. User message enters `RoundRobinGroupChat`
+2. Research agent responds first with full-domain details
+3. Summarizer agent distills the research into concise bullets
+4. Answer agent crafts the final user-facing answer and appends `TERMINATE`
+5. Chat ends once the termination condition is triggered or max turns are reached
 
-## Key Features
-- **Streaming**: All agents use streaming model clients for real-time output
-- **Memory Management**: Research agent maintains context buffer (10 messages)
-- **Termination Control**: Automatic termination on "TERMINATE" keyword or max 3 turns
-- **Local AI**: Uses Ollama for local Mistral model execution
-- **Function Calling**: Disabled (json_output=False)
-
-## Configuration Notes
-- All agents use the same Ollama endpoint: `http://localhost:11434`
-- No JSON output mode enabled
-- Round-robin ensures each agent gets a turn in sequence
-- System designed for technical research and Q&A workflows
+## Notes
+- There is a slight mismatch in comments vs implementation: `main.py` says Mistral via Ollama, but each agent uses Gemini via OpenAI API in code.
+- `mistral_client` instances are created in each agent file but not tied into any `AssistantAgent` constructor.
+- `TextMentionTermination("TERMINATE")` is used to explicitly close the group chat once the final answer includes the keyword.
+- This module is good for proving a multi-agent chain-of-thought pipeline with separate responsibilities.

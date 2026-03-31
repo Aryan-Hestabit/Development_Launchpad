@@ -4,27 +4,80 @@ This document outlines the hierarchical architecture and task-delegation logic o
 
 ## 1. System Architecture (DAG)
 
-``` mermaid
-graph TD
-    User([User Query]) --> Planner{Orchestrator/Planner}
-    
-    subgraph Parallel_Execution [Worker Phase]
-        Planner -->|Task 1| W1[Worker 1: Specialty A]
-        Planner -->|Task 2| W2[Worker 2: Specialty B]
-        Planner -->|Task 3| W3[Worker 3: Specialty C]
-    end
-    
-    W1 --> Aggregator[Result Aggregator]
-    W2 --> Aggregator
-    W3 --> Aggregator
-    
-    Aggregator --> Critic[Reflection Agent]
-    
-    subgraph Feedback_Loop [Quality Gate]
-        Critic -->|Critique| Validator{Validator Agent}
-        Validator -- FAIL: Incomplete --> Planner
-        Validator -- PASS: Accurate --> Final[Final Consolidated Answer]
-    end
-    
-    Final --> User
 ```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          USER QUERY                                         │
+│            "Switch city bus fleet to Hydrogen or Electric?"                 │
+└────────────────────────────┬────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     PLANNER AGENT                                           │
+│              (orchestrator/planner.py)                                      │
+│    Decompose query into JSON sub-tasks (max 5)                             │
+└────────────────────────────┬────────────────────────────────────────────────┘
+                             │
+                    ┌────────┴───────┐
+                    │ Parsed JSON    │
+                    │   Task List    │
+                    └────────┬───────┘
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+          ▼                  ▼                  ▼
+    ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+    │  Worker 1    │  │  Worker 2    │  │  Worker N    │
+    │ (Specialty A)│  │ (Specialty B) │  │(Specialty C) │
+    └──────────────┘  └──────────────┘  └──────────────┘
+          │                  │                  │
+          └──────────────────┼──────────────────┘
+                             │
+                    ┌────────▼───────┐
+                    │  RESULT        │
+                    │  AGGREGATOR    │
+                    │  (Combined     │
+                    │   Reports)     │
+                    └────────┬───────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│              REFLECTION AGENT                                               │
+│         (agents/reflection_agent.py)                                        │
+│    Critique worker outputs for contradictions & gaps                        │
+└────────────────────────────┬────────────────────────────────────────────────┘
+                             │
+                    ┌────────▼───────┐
+                    │  Critique      │
+                    │  Output        │
+                    └────────┬───────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│              VALIDATOR AGENT                                                │
+│         (agents/validator.py)                                               │
+│    Synthesize final professional response                                   │
+└────────────────────────────┬────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     FINAL ANSWER                                            │
+│                  (to User)                                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+## 2. Implemented Behavior from Code (Day2)
+- `main.py` starts with hardcoded query:
+  - "Should we switch the city bus fleet to Hydrogen or Electric?"
+- `planner_agent` is in `orchestrator/planner.py`:
+  - role: break query into tasks (max 5)
+  - output must be JSON array of tasks
+- `worker_agent.create_worker` builds `AssistantAgent` with an on-the-fly specialty message
+- All workers run in parallel using `asyncio.gather`
+- Reflection is performed by `reflection_agent`
+- Final synthesis by `validator_agent`
+
+## 3. Important Runtime Notes
+- `main.py` uses safe JSON fallback when planner output is invalid.
+- Task creation is dynamic by extraction of `id` and `specialty`.
+- Combine worker results into one report string before reflection and validation.
+- All agents in Day2 use Mistral through `OllamaChatCompletionClient` or the GEMINI model.
