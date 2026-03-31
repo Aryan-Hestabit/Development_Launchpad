@@ -10,9 +10,14 @@ async def run_system():
     await docker_executor.start()
     
     try:
-        query = "create a db"
-        # 2. Run the team
-        await Console(team.run_stream(task=query))
+        while True:
+            user_query = input("USER: ")
+            if user_query == "":
+                continue
+            if user_query.lower() in ["exit", "quit"]:
+                break
+            # 2. Run the team
+            await Console(team.run_stream(task=user_query))
     except openai.RateLimitError:
         print("\n🛑 RATE LIMIT HIT. The Free Tier allows 15 requests/min.")
         print("Waiting 60 seconds before you can try again...")
