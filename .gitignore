@@ -13,3 +13,7 @@ Week8/quantized/model-int8
 Week8/quantized/model-fp16.gguf
 Week8/quantized/model_q8_0.gguf
 Week9/.env
+settings.py
+workspace/
+nexus_workspace/
+logs/
