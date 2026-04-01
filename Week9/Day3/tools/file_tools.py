@@ -1,35 +1,20 @@
 import os
-from settings import WORKSPACE_DIR
 from autogen_agentchat.agents import AssistantAgent
 import settings
-from autogen_ext.models.openai import OpenAIChatCompletionClient
-
-# 1. Model Client
-gemini_client = OpenAIChatCompletionClient(
-    model=settings.MODEL_ID,
-    api_key=settings.GEMINI_API_KEY,
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-    model_info=settings.MODEL_INFO
-)
-
-from autogen_ext.models.ollama import OllamaChatCompletionClient
-
-# Qwen 2.5 (7B or 14B) is highly recommended for coding tasks
-qwen_client = OllamaChatCompletionClient(
-    model="qwen2.5:7b",
-    host="http://127.0.0.1:11434",
-)
-
-
+from autogen_core.tools import FunctionTool
+from typing_extensions import Annotated
 
 def list_workspace_files() -> str:
     """Lists all files available in the restricted workspace."""
-    files = os.listdir(WORKSPACE_DIR)
+    files = os.listdir(settings.WORKSPACE_DIR)
     return f"Available files: {files}" if files else "The workspace is currently empty."
 
-def write_to_file(filename: str, content: str) -> str:
+def write_to_file(
+        filename: Annotated[str, "The name of the file to write to"],
+        content: Annotated[str, "The content to write to the file"]
+    ) -> str:
     """Writes or overwrites a file in the workspace."""
-    path = os.path.join(WORKSPACE_DIR, os.path.basename(filename))
+    path = os.path.join(settings.WORKSPACE_DIR, os.path.basename(filename))
     try:
         with open(path, "w") as f:
             f.write(content)
@@ -37,9 +22,9 @@ def write_to_file(filename: str, content: str) -> str:
     except Exception as e:
         return f"File Error: {str(e)}"
 
-def read_from_file(filename: str) -> str:
+def read_from_file(filename: Annotated[str, "The name of the file to read from"]) -> str:
     """Reads the content of a file from the workspace."""
-    path = os.path.join(WORKSPACE_DIR, os.path.basename(filename))
+    path = os.path.join(settings.WORKSPACE_DIR, os.path.basename(filename))
     if not os.path.exists(path):
         return f"Error: {filename} does not exist."
     try:
@@ -47,20 +32,50 @@ def read_from_file(filename: str) -> str:
             return f.read()
     except Exception as e:
         return f"Read Error: {str(e)}"
-    
+
+list_workspace_files_tool = FunctionTool(
+    list_workspace_files,
+    description="Lists all files available in the restricted workspace."
+)
+write_to_file_tool = FunctionTool(
+    write_to_file,
+    description="Writes or overwrites a file in the workspace, files can be txt or csv. Args: filename, content"
+)
+read_from_file_tool = FunctionTool(
+    read_from_file,
+    description="Reads the content of a file from the workspace, files can be txt or csv.. Args: filename"
+)
+
 file_agent = AssistantAgent(
     name="file_agent",
-    model_client=gemini_client,
+    description=("Workspace file specialist. Three tools: "
+        "list_workspace_files() to see available files, "
+        "read_from_file(filename) to read file content,it can read both csv and txt files  "
+        "write_to_file(filename, content) to save content. "
+        "Use for all file read, write, and list operations exclusively."),
+    model_client=settings.model_client,
     tools=[ 
-        list_workspace_files, 
-        write_to_file, 
-        read_from_file
+        list_workspace_files_tool, 
+        write_to_file_tool, 
+        read_from_file_tool
     ],
-    system_message="""You are the @file_agent.
-    - Use 'list_workspace_files' to see the list of files in the directory.
-    - Use 'read_from_file' in order to read file data.
-    - Use 'write_to_file' if you need to create or add content to a file.
-    - Provide a clear summary of the file contents.
-    - After finishing, return control to @primary_agent.
+    max_tool_iterations=3,
+    reflect_on_tool_use=True,
+    system_message="""You are part of an Agent AI team and You are @file_agent — a specialist in file management.
+
+    CAPABILITIES: 
+    - Can read files (plain text or CSV) and return their content as strings through read_from_file_tool(filename).
+    - Can write strings to files (plain text or CSV) using write_to_file_tool(filename, content).
+    - Can list all files in the workspace with list_workspace_files_tool().
+    - Can call multiple tools in squence to accomplish complex file-related tasks.
+
+    RULES:
+    - Always uses the exact filename when reading or writing. Never assumes a file exists without checking first.
+    - Cannot execute code, manipulate databases, or perform any operations beyond file management.
+    - Always run the list_workspace_files_tool() first before running any other tool.
+    - If a file does not exist when trying to read, report the error and wait for new instructions.Do not attempt to create or modify files unless explicitly instructed by the primary agent.
+
+    CRITICAL:
+    - Never reply with an empty string. If you have no data to return, please return "No data to return." instead of an empty string.
     """
 )

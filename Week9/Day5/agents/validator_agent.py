@@ -35,6 +35,5 @@ validator_agent = AssistantAgent(
     name="validator_agent",
     model_client=gemini_client,
     system_message=VALIDATOR_PROMPT,
-    model_context=BufferedChatCompletionContext(buffer_size=10),
-    model_client_stream=True
+    model_context=BufferedChatCompletionContext(buffer_size=10)
 )

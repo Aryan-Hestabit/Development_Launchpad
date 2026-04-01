@@ -77,23 +77,10 @@ def create_nexus_team(session_memory, faiss_memory):
             code_agent, file_agent, critique_agent, 
             validator_agent, optimizer_agent, reporter_agent
         ],
-        model_client=gemini_client, # High-reasoning model for orchestration
+        model_client=qwen_client, # High-reasoning model for orchestration
         termination_condition=TextMentionTermination("TERMINATE"),
         selector_prompt=NEXUS_SELECTOR_PROMPT,
         selector_func=nexus_selector,
-        allow_repeated_speaker=True,
-        max_turns=30 # Increased for multi-agent loops
+        allow_repeated_speaker=False,
+        max_turns=15 # Increased for multi-agent loops
     )
-
-"""async def run_nexus(user_query: str):
-    print(f"🚀 Initializing NEXUS AI for Task: {user_query}")
-    
-    # If using Docker, we must start it first
-    # await code_agent.code_executor.start() 
-    
-    async for message in nexus_team.run_stream(task=user_query):
-        if isinstance(message, BaseChatMessage):
-            print(f"\n[{message.source}] -> {message.content}")
-            
-    # await code_agent.code_executor.stop()
-"""

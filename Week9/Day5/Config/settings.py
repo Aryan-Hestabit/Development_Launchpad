@@ -1,7 +1,12 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "Your_Gemini_API_Key_Here")
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
 MODEL_ID = "gemini-3.1-flash-lite-preview"
 
 # New requirement: Model Info for non-OpenAI models
@@ -11,6 +16,7 @@ MODEL_INFO = {
     "json_output": True,
     "structured_output": True,
     "family": "unknown",
+    "multiple_system_messages": True
 }
 
 # Base directory of your project

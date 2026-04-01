@@ -49,7 +49,7 @@ def read_from_file(filename: str) -> str:
     
 file_agent = AssistantAgent(
     name="file_agent",
-    model_client=gemini_client,
+    model_client=qwen_client,
     tools=[ 
         list_workspace_files, 
         write_to_file, 
@@ -62,6 +62,5 @@ file_agent = AssistantAgent(
     - Provide a clear summary of the file contents.
     - After finishing, return control to @primary_agent.
     """,
-    model_context=BufferedChatCompletionContext(buffer_size=10),
-    model_client_stream=True
-)
+    model_context=BufferedChatCompletionContext(buffer_size=10)
+    )

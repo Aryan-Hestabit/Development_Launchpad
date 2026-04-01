@@ -21,9 +21,11 @@ mistral = OllamaChatCompletionClient(
 PLANNER_PROMPT = """
 Role: Strategic Planner.
 Task: Break the user query into logical sub-tasks for the other agents to work on, Note that the subtasks count should not exceed 5.
-Rules: 1. For Simple Tasks, create 1 sub-task. 
+Rules:
+1. For Simple Tasks, create 1 sub-task. 
 2. For Moderately Complex Tasks, create 2-3 sub-tasks. 
 3. For Highly Complex Tasks, create 4-5 sub-tasks.
+4. Note that no other agent can handle code execution or any other tools.
 Output: You MUST respond ONLY with a JSON array of tasks.
 Example: 
 [

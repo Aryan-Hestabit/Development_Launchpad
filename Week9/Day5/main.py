@@ -40,26 +40,61 @@ async def run_system():
 
     print(f"🚀 NEXUS ONLINE | Session: {session_id[:8]}")
 
-    # 3. Create the Team (NATIVE MEMORY INJECTION)
-    # This ensures the Planner gets the memory objects directly
+
     nexus_team = create_nexus_team(session_memory, faiss_memory)
 
     # 4. Start Docker
-    print("🐳 Starting Docker Environment...")
+    print("Starting Docker Environment...")
     await docker_executor.start()
     
     try:
         while True:
             query = input("\n🧑 User: ").strip()
             if not query: continue
-            if query.lower() in ["exit", "quit"]: break
+            if query.lower() == "quit" or query.lower() == "exit": break
+        
+            # REQUIREMENT: 'facts' command retrieves all from SQLite
+            if query.lower() == "facts":
+                rows = faiss_memory.get_all_facts()
+                print(f"\n--- ALL STORED FACTS ({len(rows)}) ---")
+                for r in rows:
+                    print(f"[{r[0].upper()}] {r[1]} ({r[2][:10]})")
+                print("-------------------------------\n")
+                continue
+
             
             logger.info(f"USER_QUERY: {query}")
             final_output = ""
             # 1. Get the stream/result from the team
             response = await Console(nexus_team.run_stream(task=query))
 
-            print(f"response: {response}")
+            if response.messages:
+                last_message = response.messages[-1]
+    
+            # Check if it's a TextMessage and has content
+            if hasattr(last_message, 'content') and isinstance(last_message.content, str):
+                reporter_final_text = last_message.content
+            
+                # --- 💾 STORE THIS TO MEMORY ---
+                print(f"🔍 DEBUG: Saving output from {last_message.source}")
+            
+                # Update Session Memory
+                await add_to_session(session_memory, "USER", query)
+                await add_to_session(session_memory, "AGENT", reporter_final_text)
+
+                # Update Vector Store (Long-term)
+                new_facts = await extract_facts(query, reporter_final_text)
+                for f in new_facts:
+                    await faiss_memory.add(MemoryContent(
+                        content=f["content"], 
+                        mime_type=MemoryMimeType.TEXT, 
+                        metadata={"category": f["category"]}
+                    ))
+                print(f"\n✅ Learned {len(new_facts)} new facts.")
+                logger.info(f"FACTS_LEARNED: {len(new_facts)}")
+                # ... your vector store .add logic here ...
+            
+                print(f"✅ Final message saved to NEXUS memories.")
 
             """# 2. Check if it's actually a stream (has __aiter__)
             if hasattr(result_stream, "__aiter__"):

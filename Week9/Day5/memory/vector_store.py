@@ -13,7 +13,7 @@ INDEX_PATH = os.path.join(os.path.dirname(__file__), "faiss.index")
 DB_PATH    = os.path.join(os.path.dirname(__file__), "long_term.db")
 
 class FAISSVectorMemory(Memory):
-    def __init__(self, top_k=5, score_threshold=0.2):
+    def __init__(self, top_k=5, score_threshold=0.1):
         self._encoder = SentenceTransformer("all-MiniLM-L6-v2")
         self._index = faiss.IndexFlatIP(384)
         self._fact_ids = []
@@ -73,6 +73,9 @@ class FAISSVectorMemory(Memory):
 
     async def query(self, query_text: str, **kwargs) -> MemoryQueryResult:
         if self._index.ntotal == 0:
+            return MemoryQueryResult(results=[])
+        
+        if not query_text or not isinstance(query_text, str):
             return MemoryQueryResult(results=[])
 
         vec = self._encoder.encode([query_text])

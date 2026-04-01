@@ -41,5 +41,5 @@ A common point of confusion in Day 4 is the difference between the Context and t
 
 1. **Semantic Search:** User query $\rightarrow$ FAISS $\rightarrow$ Top 5 relevant facts $\rightarrow$ Injected into System Prompt.
 2. **Synchronous Extraction:** After the Agent speaks, fact_extractor.py parses the exchange.
-3. **Self-Deduplication:** The FAISSVectorMemory.add() method runs a similarity check (Threshold: 0.9). If the fact is already "known," it is discarded to prevent redundancy.
+3. **Self-Deduplication:** The FAISSVectorMemory.add() method runs a similarity check (Threshold: 0.95). If the fact is already "known," it is discarded to prevent redundancy.
 4. **Durable Save:** New facts are committed to faiss.index (for future retrieval) and long_term.db (for auditing).

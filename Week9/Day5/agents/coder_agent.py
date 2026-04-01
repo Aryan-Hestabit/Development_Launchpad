@@ -11,7 +11,8 @@ from autogen_core.model_context import BufferedChatCompletionContext
 docker_executor = DockerCommandLineCodeExecutor(
     work_dir=settings.WORKSPACE_DIR,
     image="python:3.12-slim",
-    timeout=30  # seconds
+    timeout=300,  # seconds
+    delete_tmp_files=True  # Clean up after execution
 )
 
 def simple_approval_func(request: ApprovalRequest) -> ApprovalResponse:

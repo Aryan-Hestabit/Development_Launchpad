@@ -1,6 +1,6 @@
 import openai
 import asyncio
-from agents.factory import team
+from agents.orchestrator import team
 from tools.code_executor import docker_executor
 from autogen_agentchat.ui import Console
 
@@ -9,7 +9,16 @@ async def run_system():
     print("🐳 Starting Docker Container...")
     await docker_executor.start()
     
-    try:
+    while True:
+            user_query = input("USER: ")
+            if user_query == "":
+                continue
+            if user_query.lower() in ["exit", "quit"]:
+                break
+            # 2. Run the team
+            await Console(team.run_stream(task=user_query))
+    
+    """try:
         while True:
             user_query = input("USER: ")
             if user_query == "":
@@ -24,7 +33,7 @@ async def run_system():
     finally:
         # 3. CRITICAL: Stop the executor BEFORE exiting the async function
         print("🛑 Shutting down Docker...")
-        await docker_executor.stop()
+        await docker_executor.stop()"""
 
 if __name__ == "__main__":
     # Use only one asyncio.run call for the entire lifecycle

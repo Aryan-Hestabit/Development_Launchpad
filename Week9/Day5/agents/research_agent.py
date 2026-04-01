@@ -37,8 +37,7 @@ qwen_client = OllamaChatCompletionClient(
 
 research_agent = AssistantAgent(
     name="research_agent",
-    model_client=gemini_client,
+    model_client=qwen_client,
     system_message=RESEARCHER_PROMPT,
-    model_context=BufferedChatCompletionContext(buffer_size=10),
-    model_client_stream=True
+    model_context=BufferedChatCompletionContext(buffer_size=10)
 )
