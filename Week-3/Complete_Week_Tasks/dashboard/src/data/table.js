@@ -1,0 +1,80 @@
+export const userTableColumns = [
+  "name",
+  "email",
+  "status",
+  "Sale",
+  "updatedAt",
+];
+
+export const userTableData = [
+  {
+    name: "User",
+    email: "user@example.com",
+    status: "Active",
+    Sale: "$1900",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Dr. Ray Stoltenberg",
+    email: "rosalinda42@example.com",
+    status: "Active",
+    Sale: "$50",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Mrs. Mertie Murray MD",
+    email: "ernser.susanna@example.net",
+    status: "Active",
+    Sale: "$300",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Gilbert Rice",
+    email: "willard.walter@example.org",
+    status: "Active",
+    Sale: "$1800",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Sydnie Rau",
+    email: "doug.padberg@example.org",
+    status: "Inactive",
+    Sale: "$1200",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Mr. Arvid Veum DDS",
+    email: "schinner.meaghan@example.org",
+    status: "Active",
+    Sale: "$700",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Jayme Beier DDS",
+    email: "orn.ahmed@example.com",
+    status: "Active",
+    Sale: "$400",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Uriah Swaniawski",
+    email: "wilburn.champlin@example.org",
+    status: "Inactive",
+    Sale: "$2100",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Rosanna Heaney",
+    email: "boconner@example.com",
+    status: "Active",
+    Sale: "$200",
+    updatedAt: "18/10/2024 05:27",
+  },
+  {
+    name: "Adan Reichel",
+    email: "mya.labadie@example.com",
+    status: "Inactive",
+    Sale: "$800",
+    updatedAt: "18/10/2024 05:27",
+  },
+];

@@ -1,0 +1,38 @@
+const express = require("express");
+const connectDB = require("./db");
+const config = require("../config");
+const logger = require("../utils/logger");
+const applySecurity = require("../middlewares/security");
+const productRoutes = require("../routes/product.routes");
+const userRoutes = require("../routes/user.routes");
+const errorMiddleware = require("../middlewares/error.middleware");
+const tracing = require("../utils/tracing");
+
+
+module.exports = async function startApp() {
+  const app = express();
+
+  // ✅ Apply security FIRST
+  applySecurity(app);
+
+  app.use(express.json());
+  app.use(tracing);
+  
+  logger.info("Middlewares loaded");
+
+  await connectDB();
+
+  app.get("/", (_, res) => res.send("Server running"));
+  app.get("/health", (_, res) => res.send("health OK"));
+
+  app.use("/products", productRoutes);
+  app.use("/users", userRoutes);
+
+  logger.info("Routes mounted: /products, /users");
+
+  app.use(errorMiddleware);
+
+  app.listen(config.port, () => {
+    logger.info(`Server started on port ${config.port}`);
+  });
+};
