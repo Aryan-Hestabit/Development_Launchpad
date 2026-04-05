@@ -1,0 +1,26 @@
+# Use Node as the base image, then install Python runtime and dependencies
+FROM node:20-slim
+
+# Install Python and essential build tools
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        python3 python3-pip python3-venv build-essential git wget ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy deployment files into the container
+COPY deploy/ ./deploy/
+COPY src/deploy/config.py ./deploy/config.py
+COPY src/deploy/model_loader.py ./deploy/model_loader.py
+
+# Install Python dependencies
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install streamlit llama-cpp-python
+
+# Expose Streamlit default port
+EXPOSE 8501
+
+# Set the command to run the Streamlit app
+CMD ["python3", "deploy/app.py"]
