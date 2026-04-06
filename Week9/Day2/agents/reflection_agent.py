@@ -1,37 +1,38 @@
 from autogen_agentchat.agents import AssistantAgent
-from autogen_ext.models.ollama import OllamaChatCompletionClient
-from autogen_ext.models.openai import OpenAIChatCompletionClient
 import settings
 
-
-# 1. Model Client
-gemini_client = OpenAIChatCompletionClient(
-    model=settings.MODEL_ID,
-    api_key=settings.GEMINI_API_KEY,
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-    model_info=settings.MODEL_INFO
-)
-
-mistral = OllamaChatCompletionClient(
-    model="mistral", 
-    host="http://localhost:11434", 
-    function_calling=False, 
-    json_output=False
-)
-
 REFLECTION_PROMPT = """
-Role: Senior Peer Reviewer & Critic.
-Task: Critically evaluate the combined output of multiple specialized workers.
-Check for:
-1. Contradictions between workers.
-2. Missing data points from the original plan.
-3. Lack of depth or generic answers.
-Output: Provide a 'Critique' list. If the work is excellent, state 'NO IMPROVEMENTS NEEDED'.
+You are an expert Output Refiner. You receive raw reports from Worker 
+Agents and your job is to refine each report for clarity, coherence, 
+and quality — without adding any new information.
+
+---
+
+## YOUR CONSTRAINTS (follow strictly):
+- Do NOT add any new facts, opinions, or information not present 
+  in the original worker report.
+- Do NOT remove any critical information from the original report.
+- Only improve: clarity, structure, grammar, flow, and readability.
+- Preserve the "REPORT BY {worker name}:" header format exactly.
+- Refine ALL worker reports you receive — do not skip any.
+
+---
+
+## OUTPUT FORMAT (mirror the input structure, refined):
+
+REPORT BY {worker name}:
+[Refined version of the worker's content — same information, 
+ improved quality]
+
+REPORT BY {worker name}:
+[Refined version of the worker's content — same information, 
+ improved quality]
+
 """
 
 reflection_agent = AssistantAgent(
     name="reflection_agent",
-    model_client=gemini_client,
+    model_client=settings.gemini_client,
     system_message=REFLECTION_PROMPT,
     model_client_stream=True
 )

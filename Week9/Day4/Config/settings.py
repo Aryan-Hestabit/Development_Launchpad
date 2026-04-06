@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+from autogen_ext.models.openai import OpenAIChatCompletionClient
+
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -14,6 +16,14 @@ MODEL_INFO = {
     "json_output": True,
     "structured_output": True,
     "family": "unknown",
+    "multiple_system_messages" : True
 }
 
+# 1. Model Client
+gemini_client = OpenAIChatCompletionClient(
+    model=MODEL_ID,
+    api_key=GEMINI_API_KEY,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    model_info=MODEL_INFO
+)
 

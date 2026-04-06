@@ -36,10 +36,6 @@ gemini_client = OpenAIChatCompletionClient(
     model_info=settings.MODEL_INFO
 )
 
-# =============================================================================
-# LOGGING — file only, conversation turns + facts, nothing else
-# =============================================================================
-
 def setup_logging(session_id: str) -> logging.Logger:
     os.makedirs(LOGS_DIR, exist_ok=True)
     logger = logging.getLogger(session_id)
@@ -115,17 +111,15 @@ async def main():
 
         new_facts = await extract_facts(user_input, agent_res)
         if new_facts:
-            # We await the storage to ensure the DB is 100% updated 
-            # before the next 'input()' prompt appears.
             for f in new_facts:
                 await faiss_memory.add(MemoryContent(
                     content=f["content"], 
                     mime_type=MemoryMimeType.TEXT, 
                     metadata={"category": f["category"]}
                 ))
-            print(f" ✅ {len(new_facts)} facts stored.")
+            print(f" {len(new_facts)} facts stored.")
         else:
-            print(" ℹ️ No new facts found.")
+            print(" No new facts found.")
 
 
 if __name__ == "__main__":

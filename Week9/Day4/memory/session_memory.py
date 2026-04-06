@@ -7,10 +7,10 @@ async def add_to_session(memory: ListMemory, role: str, content: str) -> None:
     # Sliding Window: Keep only the most recent 20 messages
     if len(memory._contents) >= 20:
         memory._contents.pop(0) 
+    
+    model_context = MemoryContent(content=f"[{role}]: {content}",mime_type=MemoryMimeType.TEXT)
 
-    await memory.add(
-        MemoryContent(
-            content=f"[{role}]: {content}",
-            mime_type=MemoryMimeType.TEXT,
-        )
-    )
+    await memory.add(model_context)
+
+async def clear_memory(memory: ListMemory) -> None:
+    memory.clear()

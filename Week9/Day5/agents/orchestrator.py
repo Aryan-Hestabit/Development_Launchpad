@@ -1,7 +1,7 @@
 import os
 from typing import Sequence
 from autogen_agentchat.teams import SelectorGroupChat
-from autogen_agentchat.conditions import TextMentionTermination
+from autogen_agentchat.conditions import TextMentionTermination , MaxMessageTermination
 from autogen_agentchat.messages import BaseAgentEvent, BaseChatMessage
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.models.ollama import OllamaChatCompletionClient
@@ -77,8 +77,8 @@ def create_nexus_team(session_memory, faiss_memory):
             code_agent, file_agent, critique_agent, 
             validator_agent, optimizer_agent, reporter_agent
         ],
-        model_client=qwen_client, # High-reasoning model for orchestration
-        termination_condition=TextMentionTermination("TERMINATE"),
+        model_client=settings.model_client, # High-reasoning model for orchestration
+        termination_condition=TextMentionTermination("TERMINATE") | MaxMessageTermination(15),
         selector_prompt=NEXUS_SELECTOR_PROMPT,
         selector_func=nexus_selector,
         allow_repeated_speaker=False,

@@ -58,7 +58,7 @@ qwen_client = OllamaChatCompletionClient(
 def get_planner(session_memory, faiss_memory):
     return AssistantAgent(
         name="planner_agent",
-        model_client=qwen_client,
+        model_client=settings.model_client,
         system_message=_PLANNER_SYSTEM_MESSAGE,
         # NATIVE MEMORY ATTACHMENT
         memory=[session_memory, faiss_memory],

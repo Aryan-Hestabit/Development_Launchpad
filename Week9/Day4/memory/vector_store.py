@@ -81,7 +81,7 @@ class FAISSVectorMemory(Memory):
 
         results = []
         for score, idx in zip(scores[0], indices[0]):
-            print(f"📊 Raw Score found: {score} for index {idx}")
+            print(f" Raw Score found: {score} for index {idx}")
             if idx != -1 and float(score) >= self.score_threshold:
                 # Map FAISS index back to SQLite ID
                 db_id = self._fact_ids[idx]

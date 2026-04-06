@@ -14,7 +14,7 @@ This document outlines the hierarchical architecture and task-delegation logic o
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                     PLANNER AGENT                                           │
 │              (orchestrator/planner.py)                                      │
-│    Decompose query into JSON sub-tasks (max 5)                             │
+│    Decompose query into JSON sub-tasks (max 5)                              │
 └────────────────────────────┬────────────────────────────────────────────────┘
                              │
                     ┌────────┴───────┐
@@ -66,18 +66,15 @@ This document outlines the hierarchical architecture and task-delegation logic o
 ```
 
 ## 2. Implemented Behavior from Code (Day2)
-- `main.py` starts with hardcoded query:
-  - "Should we switch the city bus fleet to Hydrogen or Electric?"
 - `planner_agent` is in `orchestrator/planner.py`:
   - role: break query into tasks (max 5)
   - output must be JSON array of tasks
-- `worker_agent.create_worker` builds `AssistantAgent` with an on-the-fly specialty message
+- `worker_agent.create_worker` builds `AssistantAgent` with an on-the-fly Role message
 - All workers run in parallel using `asyncio.gather`
 - Reflection is performed by `reflection_agent`
 - Final synthesis by `validator_agent`
 
 ## 3. Important Runtime Notes
 - `main.py` uses safe JSON fallback when planner output is invalid.
-- Task creation is dynamic by extraction of `id` and `specialty`.
+- Task creation is dynamic by extraction of `id` and `Role`.
 - Combine worker results into one report string before reflection and validation.
-- All agents in Day2 use Mistral through `OllamaChatCompletionClient` or the GEMINI model.

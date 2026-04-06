@@ -74,7 +74,7 @@ qwen_client = OllamaChatCompletionClient(
 
 analyst_agent = AssistantAgent(
     name="analyst_agent",
-    model_client=qwen_client,
+    model_client=settings.model_client,
     system_message=ANALYST_PROMPT,
     tools=[csv_tool, sql_tool],
     model_context=BufferedChatCompletionContext(buffer_size=10)

@@ -37,7 +37,7 @@ qwen_client = OllamaChatCompletionClient(
 
 critique_agent = AssistantAgent(
     name="critique_agent",
-    model_client=qwen_client,
+    model_client=settings.model_client,
     system_message=CRITIQUE_PROMPT,
     model_context=BufferedChatCompletionContext(buffer_size=10)
 )

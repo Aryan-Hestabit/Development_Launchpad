@@ -4,24 +4,25 @@ from autogen_ext.models.ollama import OllamaChatCompletionClient
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_core.models import ModelInfo
 
+
 load_dotenv()
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL_ID = "gemini-3.1-flash-lite-preview"
 
 # New requirement: Model Info for non-OpenAI models
 MODEL_INFO = {
-    "vision": True,
+    "vision": False,
     "function_calling": True,
     "json_output": True,
     "structured_output": True,
-    "family": "unknown" 
+    "family": "unknown",
+    "multiple_system_messages" : True 
 }
 
 # 1. Model Client
 gemini_client = OpenAIChatCompletionClient(
-    model=MODEL_ID,
+    model="gemini-3.1-flash-lite-preview",
     api_key=GEMINI_API_KEY,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
     model_info=MODEL_INFO
@@ -39,7 +40,6 @@ groq_client = OpenAIChatCompletionClient(
     api_key=GROQ_API_KEY,
     base_url="https://api.groq.com/openai/v1",
     model_info=GROQ_MODEL_INFO,
-    include_name_in_message=False  
 )
 # Qwen 2.5 (7B or 14B) is highly recommended for coding tasks
 qwen_client = OllamaChatCompletionClient(
@@ -52,7 +52,7 @@ qwen_coder_client = OllamaChatCompletionClient(
     host="http://127.0.0.1:11434"
 )
 
-model_client = qwen_client
+model_client = groq_client
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 WORKSPACE_DIR = os.path.join(BASE_DIR, "workspace")

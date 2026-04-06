@@ -3,7 +3,6 @@ import re
 from typing import List, Dict
 from autogen_core.models import SystemMessage, UserMessage
 from Config import settings
-from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 _SYSTEM_PROMPT = """
 You are a memory extraction assistant. 
@@ -20,13 +19,7 @@ Respond ONLY with a valid JSON array:
 [{"content": "<fact>", "category": "<category>"}, ...]
 If nothing is worth storing, respond exactly with: []
 """
-# 1. Model Client
-gemini_client = OpenAIChatCompletionClient(
-    model=settings.MODEL_ID,
-    api_key=settings.GEMINI_API_KEY,
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-    model_info=settings.MODEL_INFO
-)
+
 
 async def extract_facts(user_message: str, agent_response: str, client = settings.gemini_client) -> List[Dict[str, str]]:
     exchange = f"USER: {user_message.strip()}\nAGENT: {agent_response.strip()}"

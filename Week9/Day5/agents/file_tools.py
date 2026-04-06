@@ -49,7 +49,7 @@ def read_from_file(filename: str) -> str:
     
 file_agent = AssistantAgent(
     name="file_agent",
-    model_client=qwen_client,
+    model_client=settings.model_client,
     tools=[ 
         list_workspace_files, 
         write_to_file, 

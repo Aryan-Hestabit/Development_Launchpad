@@ -6,13 +6,12 @@ The Day3 implementation features a multi-agent system built with AutoGen that pr
 
 ## Architecture
 
-The system consists of five agents organized in a SelectorGroupChat:
+The system consists of 4 agents organized in a SelectorGroupChat:
 
 1. **Planner Agent** - Strategic coordinator and task delegator
 2. **Code Agent** - Code execution specialist
 3. **DB Agent** - Database management specialist
 4. **File Agent** - File system management specialist
-5. **Reporter Agent** - Results summarization specialist
 
 ## Tool Chain Components
 

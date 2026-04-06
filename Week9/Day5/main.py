@@ -14,7 +14,7 @@ from memory.session_memory import build_session_memory, add_to_session
 from memory.vector_store import FAISSVectorMemory 
 from memory.fact_extractor import extract_facts
 
-# --- 📜 LOGGING SETUP ---
+# --- LOGGING SETUP ---
 LOGS_DIR = os.path.join(os.path.dirname(__file__), "memory", "logs")
 
 def setup_logger(session_id: str) -> logging.Logger:
@@ -68,72 +68,39 @@ async def run_system():
             # 1. Get the stream/result from the team
             response = await Console(nexus_team.run_stream(task=query))
 
+            print(f"\n RESPONSE: \n {response}")
+
             if response.messages:
                 last_message = response.messages[-1]
     
-            # Check if it's a TextMessage and has content
-            if hasattr(last_message, 'content') and isinstance(last_message.content, str):
-                reporter_final_text = last_message.content
+            reporter_final_text = last_message.content
             
-                # --- 💾 STORE THIS TO MEMORY ---
-                print(f"🔍 DEBUG: Saving output from {last_message.source}")
+            # ---  STORE THIS TO MEMORY ---
+            print(f"🔍 DEBUG: Saving output from {last_message.source}")
             
-                # Update Session Memory
-                await add_to_session(session_memory, "USER", query)
-                await add_to_session(session_memory, "AGENT", reporter_final_text)
+            # Update Session Memory
+            await add_to_session(session_memory, "USER", query)
+            await add_to_session(session_memory, "AGENT", reporter_final_text)
 
-                # Update Vector Store (Long-term)
-                new_facts = await extract_facts(query, reporter_final_text)
-                for f in new_facts:
-                    await faiss_memory.add(MemoryContent(
-                        content=f["content"], 
-                        mime_type=MemoryMimeType.TEXT, 
-                        metadata={"category": f["category"]}
-                    ))
-                print(f"\n✅ Learned {len(new_facts)} new facts.")
-                logger.info(f"FACTS_LEARNED: {len(new_facts)}")
-                # ... your vector store .add logic here ...
+            # Update Vector Store (Long-term)
+            new_facts = await extract_facts(query, reporter_final_text)
+            for f in new_facts:
+                await faiss_memory.add(MemoryContent(
+                    content=f["content"], 
+                    mime_type=MemoryMimeType.TEXT, 
+                    metadata={"category": f["category"]}
+                ))
+            print(f"\nLearned {len(new_facts)} new facts.")
+            logger.info(f"FACTS_LEARNED: {len(new_facts)}")
+            # ... your vector store .add logic here ...
             
-                print(f"✅ Final message saved to NEXUS memories.")
+            print(f" Final message saved to NEXUS memories.")
 
-            """# 2. Check if it's actually a stream (has __aiter__)
-            if hasattr(result_stream, "__aiter__"):
-                async for message in result_stream:
-                    # SAFE ATTRIBUTE CHECK for events
-                    if hasattr(message, 'content') and isinstance(message.content, str):
-                        final_output = message.content
-                    
-                    # Render the UI
-                    await Console(message)
-            else:
-                # If it returned a single TaskResult/TextMessage instead of a stream
-                final_output = result_stream.content if hasattr(result_stream, 'content') else str(result_stream)
-                await Console(result_stream)
-
-            # --- 💾 POST-PROCESS & STORAGE ---
-            if final_output:
-                logger.info(f"NEXUS_RESPONSE: {len(final_output)} chars")
-                
-                # Update Short-term (Session)
-                await add_to_session(session_memory, "USER", query)
-                await add_to_session(session_memory, "AGENT", final_output)
-
-                # Update Long-term (Facts)
-                new_facts = await extract_facts(query, final_output)
-                for f in new_facts:
-                    await faiss_memory.add(MemoryContent(
-                        content=f["content"], 
-                        mime_type=MemoryMimeType.TEXT, 
-                        metadata={"category": f["category"]}
-                    ))
-                print(f"\n✅ Learned {len(new_facts)} new facts.")
-                logger.info(f"FACTS_LEARNED: {len(new_facts)}")
-                """
     except Exception as e:
         logger.error(f"SYSTEM_ERROR: {str(e)}")
-        print(f"❌ System Error: {e}")
+        print(f" System Error: {e}")
     finally:
-        print("🛑 Shutting down Docker...")
+        print(" Shutting down Docker...")
         await docker_executor.stop()
         logger.info("--- SESSION END ---")
 

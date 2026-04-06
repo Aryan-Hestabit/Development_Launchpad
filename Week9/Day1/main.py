@@ -6,7 +6,6 @@ from autogen_agentchat.teams import RoundRobinGroupChat
 from autogen_agentchat.ui import Console
 from autogen_agentchat.conditions import TextMentionTermination
 
-
 async def main():
     print("Day 1: Multi-Agent System Active (Mistral)")
     print("Memory Window: 10 | Type 'exit' to quit.\n")
@@ -15,19 +14,15 @@ async def main():
         user_query = input("USER: ")
         if user_query == "":
             continue
-        if user_query.lower() in ["exit", "quit"]:
+        elif user_query.lower() in ["exit", "quit"]:
             break
-
-        team = RoundRobinGroupChat(
-            [research_agent, summarizer_agent, answer_agent],
-            termination_condition=TextMentionTermination("TERMINATE"),
-            max_turns = 3
-            )
-        
-        await Console(team.run_stream(task=user_query))
-
+        else:
+            team = RoundRobinGroupChat(
+                [research_agent, summarizer_agent, answer_agent],
+                termination_condition=TextMentionTermination("TERMINATE"),
+                max_turns = 3
+                )
+            
+            await Console(team.run_stream(task=user_query))
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\nSystem offline.")
+    asyncio.run(main())

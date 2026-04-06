@@ -6,34 +6,23 @@ from autogen_agentchat.ui import Console
 
 async def run_system():
     # 1. Start the executor
-    print("🐳 Starting Docker Container...")
+    print("Starting Docker Container...")
     await docker_executor.start()
     
-    while True:
-            user_query = input("USER: ")
-            if user_query == "":
-                continue
-            if user_query.lower() in ["exit", "quit"]:
-                break
-            # 2. Run the team
-            await Console(team.run_stream(task=user_query))
-    
-    """try:
+    try:
         while True:
-            user_query = input("USER: ")
-            if user_query == "":
-                continue
-            if user_query.lower() in ["exit", "quit"]:
-                break
-            # 2. Run the team
-            await Console(team.run_stream(task=user_query))
-    except openai.RateLimitError:
-        print("\n🛑 RATE LIMIT HIT. The Free Tier allows 15 requests/min.")
-        print("Waiting 60 seconds before you can try again...")
-    finally:
-        # 3. CRITICAL: Stop the executor BEFORE exiting the async function
-        print("🛑 Shutting down Docker...")
-        await docker_executor.stop()"""
+                user_query = input("USER: ")
+                if user_query == "":
+                    continue
+                elif user_query.lower() in ["exit", "quit"]:
+                    break
+                else:# 2. Run the team
+                    result = await Console(team.run_stream(task=user_query))
+    except Exception as e:
+        print(f"\n ERROR: \n {str(e)}") 
+    finally:        # 3. CRITICAL: Stop the executor BEFORE exiting the async function
+        print("Shutting down Docker...")
+        await docker_executor.stop()   
 
 if __name__ == "__main__":
     # Use only one asyncio.run call for the entire lifecycle
