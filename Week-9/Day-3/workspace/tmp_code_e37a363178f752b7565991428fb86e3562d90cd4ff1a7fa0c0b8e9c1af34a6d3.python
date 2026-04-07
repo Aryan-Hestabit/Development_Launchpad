@@ -1,0 +1,17 @@
+import csv
+import random
+
+# Data configuration
+num_rows = 20
+regions = ['North', 'South', 'East', 'West', 'Central']
+users = [f'User_{i}' for i in range(1, num_rows + 1)]
+
+# Generate data and write to CSV
+with open('user.csv', mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['user', 'salary', 'region'])
+    
+    for user in users:
+        salary = random.randint(30000, 120000)
+        region = random.choice(regions)
+        writer.writerow([user, salary, region])
